@@ -3396,15 +3396,368 @@ body.theme-dark .cake-section .section-title {
     text-shadow: 0 0 10px rgba(255, 213, 79, 0.5);
 }
     </style>
+<style>
+    /* Login System Styles */
+#loginOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #FF9800 0%, #FF5722 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    transition: opacity 0.5s ease;
+}
 
+.login-container {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    width: 90%;
+    max-width: 400px;
+    padding: 40px 30px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.login-title {
+    font-family: 'Pacifico', cursive;
+    font-size: 2.5rem;
+    color: #FF5722;
+    margin-bottom: 10px;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(135deg, #FF5722 0%, #FF9800 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.login-subtitle {
+    color: #FF9800;
+    font-size: 1.1rem;
+}
+
+.birthday-icon {
+    position: absolute;
+    font-size: 1.5rem;
+    opacity: 0.3;
+    z-index: 1;
+}
+
+.birthday-icon:nth-child(1) {
+    top: 10%;
+    left: 10%;
+    animation: float 3s infinite ease-in-out;
+}
+
+.birthday-icon:nth-child(2) {
+    top: 20%;
+    right: 10%;
+    animation: float 4s infinite ease-in-out 1s;
+}
+
+.birthday-icon:nth-child(3) {
+    bottom: 15%;
+    left: 15%;
+    animation: float 5s infinite ease-in-out 0.5s;
+}
+
+.birthday-icon:nth-child(4) {
+    bottom: 10%;
+    right: 15%;
+    animation: float 3.5s infinite ease-in-out 1.5s;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-10px) rotate(5deg); }
+}
+
+.login-form {
+    margin-top: 30px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.form-group i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #FF9800;
+    font-size: 1.2rem;
+}
+
+.form-input {
+    width: 100%;
+    padding: 15px 15px 15px 45px;
+    border: 2px solid rgba(255, 152, 0, 0.3);
+    border-radius: 50px;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 1rem;
+    background: rgba(255, 255, 255, 0.9);
+    transition: all 0.3s ease;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #FF5722;
+    box-shadow: 0 5px 15px rgba(255, 87, 34, 0.2);
+    transform: translateY(-3px);
+}
+
+.login-btn {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(135deg, #FF9800 0%, #FF5722 100%);
+    border: none;
+    border-radius: 50px;
+    color: white;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(255, 152, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.login-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(255, 152, 0, 0.4);
+}
+
+.error-message {
+    color: #F44336;
+    margin-top: 15px;
+    font-weight: 600;
+    display: none;
+    animation: shake 0.5s;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-5px); }
+    40%, 80% { transform: translateX(5px); }
+}
+
+.loading-spinner {
+    display: none;
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(255, 152, 0, 0.3);
+    border-top: 4px solid #FF5722;
+    border-radius: 50%;
+    margin: 20px auto 0;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+/* Development Mode Styles */
+#developmentOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #607D8B 0%, #455A64 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    transition: opacity 0.5s ease;
+}
+
+.dev-container {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    width: 90%;
+    max-width: 500px;
+    padding: 40px 30px;
+    text-align: center;
+    animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.dev-icon {
+    font-size: 4rem;
+    color: #607D8B;
+    margin-bottom: 20px;
+    animation: rotate 3s infinite linear;
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.dev-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 2rem;
+    color: #455A64;
+    margin-bottom: 20px;
+}
+
+.dev-message {
+    font-size: 1.1rem;
+    color: #546E7A;
+    margin-bottom: 15px;
+    line-height: 1.5;
+}
+
+.dev-details {
+    color: #78909C;
+    margin-bottom: 30px;
+}
+
+.dev-logout-btn {
+    padding: 12px 25px;
+    background: linear-gradient(135deg, #607D8B 0%, #455A64 100%);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(69, 90, 100, 0.3);
+}
+
+.dev-logout-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(69, 90, 100, 0.4);
+}
+</style>
+<style>
+    /* Logout Button Styles */
+.main-logout-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 30px;
+    padding: 8px 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: #FF5722;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    z-index: 999;
+}
+
+.main-logout-btn:hover {
+    background: white;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+.main-logout-btn i {
+    font-size: 1rem;
+}
+
+/* For small screens, show icon only */
+@media (max-width: 600px) {
+    .main-logout-btn span {
+        display: none;
+    }
+    
+    .main-logout-btn {
+        padding: 10px;
+    }
+    
+    .main-logout-btn i {
+        font-size: 1.2rem;
+    }
+}
+#loginOverlay, #developmentOverlay {
+    transition: opacity 0.5s ease;
+}
+/* Content Wrapper Control */
+#birthdayContentWrapper {
+    width: 100%;
+    height: 100%;
+    overflow: auto; /* Ensure scrolling works properly */
+}
+
+/* Make overlays fully opaque and above content */
+#loginOverlay, #developmentOverlay {
+    z-index: 10000;
+    background-color: rgba(0, 0, 0, 1); /* Fully opaque background */
+}
+
+/* Ensure no content is visible during transitions */
+body {
+    background: #000; /* Dark background to prevent any content flashes */
+}
+</style>
 </head>
 <body>
+    <!-- Login Overlay -->
+<div id="loginOverlay">
+    <div class="login-container">
+        <div class="login-header">
+            <h1 class="login-title">Birthday Access</h1>
+            <p class="login-subtitle">Please log in to continue</p>
+        </div>
+        
+        <!-- Birthday Icons -->
+        <div class="birthday-icon">🎂</div>
+        <div class="birthday-icon">🎁</div>
+        <div class="birthday-icon">🎈</div>
+        <div class="birthday-icon">✨</div>
+        
+        <div class="login-form">
+            <div class="form-group">
+                <i class="fas fa-user"></i>
+                <input type="text" id="username" class="form-input" placeholder="Username">
+            </div>
+            <div class="form-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="password" class="form-input" placeholder="Password">
+            </div>
+            <button id="loginBtn" class="login-btn">Let's Celebrate!</button>
+            <div id="errorMessage" class="error-message">Incorrect username or password!</div>
+            <div id="loadingSpinner" class="loading-spinner"></div>
+        </div>
+    </div>
+</div>
+<!-- Development Mode Overlay -->
+<div id="developmentOverlay" style="display: none;">
+    <div class="dev-container">
+        <i class="fas fa-tools dev-icon"></i>
+        <h2 class="dev-title">Website Under Development</h2>
+        <p class="dev-message">This website is currently in development mode. Please check back later.</p>
+        <p class="dev-details">Our team is working hard to bring you something special!</p>
+        <button id="devLogoutBtn" class="dev-logout-btn">Logout</button>
+    </div>
+</div>
     <div class="theme-toggle-container">
         <button id="themeToggleBtn" class="theme-toggle-btn">
             <i class="fas fa-sun theme-icon light-icon"></i>
             <i class="fas fa-moon theme-icon dark-icon"></i>
         </button>
     </div>
+    <!-- Content Control Wrapper -->
+<div id="birthdayContentWrapper" style="display: none;">
+    <!-- ALL YOUR EXISTING BIRTHDAY SITE CONTENT GOES HERE -->
+</div>
     <!-- Sound initialization overlay -->
     <div id="soundInitOverlay">
         <h2>Enable Birthday sounds?</h2>
@@ -3708,7 +4061,7 @@ body.theme-dark .cake-section .section-title {
 
     <!-- Birthday Memory Gallery -->
     <section class="gallery-section">
-        <h2 class="section-title" id="galleryTitle"> Memories</h2>
+        <h2 class="section-title" id="galleryTitle"> Gallery</h2>
         <div class="birthday-gallery" id="gallery">
             <div class="photo-wrapper">
                 <div class="photo">
@@ -3752,6 +4105,7 @@ body.theme-dark .cake-section .section-title {
                 </div>
                 <p class="photo-caption">Best Day Ever</p>
             </div>
+            
         </div>
     </section>
 
@@ -3773,7 +4127,7 @@ body.theme-dark .cake-section .section-title {
         </div>
         <div class="birthday-message-container">
             <h1 class="birthday-message">Happy Birthday</h1>
-            <p class="birthday-name" id="birthdayName">BESTU</p>
+            <p class="birthday-name" id="birthdayName">Cuto Pie &#129383</p>
         </div>
     </div>
 
@@ -3804,6 +4158,11 @@ body.theme-dark .cake-section .section-title {
         
         <p class="gift-text">Click the gift to unwrap your surprise!</p>
         </section>
+        <!-- Logout Button for Main Birthday View -->
+<div id="mainLogoutBtn" class="main-logout-btn">
+    <i class="fas fa-sign-out-alt"></i>
+    <span>Logout</span>
+</div>
 
     <!-- JavaScript -->
     <script>
@@ -5728,10 +6087,1410 @@ document.addEventListener('DOMContentLoaded', function() {
     setTimeout(fixCakeTitle, 1000);
 });
         </script>
-    <!-- Wish Popup Animation -->
-    <div class="wish-popup-container" id="wishPopupContainer"></div>
+       <script>
+        // Combined solution with reliable gift box functionality and hidden question mark + flowers
+(function() {
+// Set global flag
+window.giftIsUnlocked = false;
+
+// Get essential elements
+const giftBox = document.getElementById('giftBox');
+const giftPopup = document.getElementById('giftPopup');
+const giftPopupOverlay = document.getElementById('giftPopupOverlay');
+
+// If elements don't exist, stop here
+if (!giftBox) return;
+
+// 1. First, forcibly hide the surprise and popup
+const giftSurprise = giftBox.querySelector('.gift-surprise');
+if (giftSurprise) {
+    giftSurprise.style.display = 'none';
+    giftSurprise.style.opacity = '0';
+    giftSurprise.style.visibility = 'hidden';
+}
+
+if (giftPopup) {
+    giftPopup.style.display = 'none';
+    giftPopup.classList.remove('active');
+}
+
+if (giftPopupOverlay) {
+    giftPopupOverlay.style.display = 'none';
+    giftPopupOverlay.classList.remove('active');
+}
+
+// 2. Create HTML elements
+
+// Create Password Overlay
+const passwordOverlay = document.createElement('div');
+passwordOverlay.className = 'gift-password-overlay';
+passwordOverlay.innerHTML = `
+    <div class="gift-password-container">
+        <div class="gift-password-close">
+            <i class="fas fa-times"></i>
+        </div>
+        <h3 class="gift-password-title">Enter the Secret Code</h3>
+        <p class="gift-password-message">Enter the 4-letter code to unlock your gift!</p>
+        <div class="password-input-container">
+            <input type="text" maxlength="1" class="password-char" autofocus>
+            <input type="text" maxlength="1" class="password-char">
+            <input type="text" maxlength="1" class="password-char">
+            <input type="text" maxlength="1" class="password-char">
+        </div>
+        <div class="password-error"></div>
+        <button class="password-submit-btn">Unlock Gift</button>
+        <div class="password-hint-text">Find the hidden question mark to discover the password!</div>
+    </div>
+`;
+document.body.appendChild(passwordOverlay);
+
+// Create Flower Hint Overlay
+const flowerHintOverlay = document.createElement('div');
+flowerHintOverlay.className = 'flower-hint-overlay';
+flowerHintOverlay.innerHTML = `
+    <div class="flower-hint-close">
+        <i class="fas fa-times"></i>
+    </div>
+    <div class="flower-bouquet-container">
+        <div class="flower flower-1" data-letter="?" data-hint="The first letter is smoething that aj kal jo apne jada lagde ne &#128514 ">
+            <div class="flower-petal"></div>
+            <div class="flower-petal"></div>
+            <div class="flower-petal"></div>
+            <div class="flower-petal"></div>
+            <div class="flower-petal"></div>
+            <div class="flower-center">?</div>
+        </div>
+        <div class="flower flower-2" data-letter="?" data-hint="The second letter makes a circle, like the shape of a birthday balloon">
+            <div class="flower-petal"></div>
+            <div class="flower-petal"></div>
+            <div class="flower-petal"></div>
+            <div class="flower-petal"></div>
+            <div class="flower-petal"></div>
+            <div class="flower-center">?</div>
+        </div>
+        <div class="flower flower-3" data-letter="?" data-hint="The third letter looks like the top of a heart ♥">
+            <div class="flower-petal"></div>
+            <div class="flower-petal"></div>
+            <div class="flower-petal"></div>
+            <div class="flower-petal"></div>
+            <div class="flower-petal"></div>
+            <div class="flower-center">?</div>
+        </div>
+        <div class="flower flower-4" data-letter="?" data-hint="The last letter is the most common letter in English">
+            <div class="flower-petal"></div>
+            <div class="flower-petal"></div>
+            <div class="flower-petal"></div>
+            <div class="flower-petal"></div>
+            <div class="flower-petal"></div>
+            <div class="flower-center">?</div>
+        </div>
+    </div>
+    <div class="letter-reveal-container">
+        <div class="letter-reveal">
+            <div class="letter-reveal-text"></div>
+            <div class="letter-reveal-hint"></div>
+        </div>
+    </div>
+`;
+document.body.appendChild(flowerHintOverlay);
+
+// Create hidden question mark button
+const hiddenQuestionButton = document.createElement('div');
+hiddenQuestionButton.className = 'hidden-question-button';
+hiddenQuestionButton.innerHTML = '<i class="fas fa-question"></i>';
+giftBox.appendChild(hiddenQuestionButton);
+
+// Create "Enter Passcode" button
+const passwordButton = document.createElement('button');
+passwordButton.className = 'enter-passcode-btn';
+passwordButton.innerHTML = '<i class="fas fa-key"></i> Enter Passcode';
+passwordButton.style.display = 'none';
+
+const giftSection = document.querySelector('.gift-section');
+if (giftSection) {
+    giftSection.appendChild(passwordButton);
+} else {
+    document.body.appendChild(passwordButton);
+}
+
+// 3. Add CSS Styles
+const styles = document.createElement('style');
+styles.textContent = `
+    /* Password Overlay */
+    .gift-password-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        z-index: 3000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+    }
     
-    <!-- Wish 3D Rain Animation Container -->
-    <div class="wish-rain-container" id="wishRainContainer"></div>
+    .gift-password-overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    .gift-password-container {
+        background: white;
+        padding: 30px;
+        border-radius: 20px;
+        width: 90%;
+        max-width: 450px;
+        text-align: center;
+        position: relative;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        transform: scale(0.8);
+        transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    
+    .gift-password-overlay.active .gift-password-container {
+        transform: scale(1);
+    }
+    
+    .gift-password-title {
+        font-family: 'Pacifico', cursive;
+        font-size: 2rem;
+        color: #FF9800;
+        margin-bottom: 15px;
+        background: linear-gradient(135deg, #FF9800 0%, #FF5722 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    
+    .gift-password-message {
+        color: #666;
+        margin-bottom: 25px;
+        font-size: 1.1rem;
+    }
+    
+    .password-input-container {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin-bottom: 25px;
+    }
+    
+    .password-char {
+        width: 50px;
+        height: 60px;
+        border: 2px solid #FF9800;
+        border-radius: 10px;
+        font-size: 2rem;
+        text-align: center;
+        text-transform: uppercase;
+        background-color: #FFF9C4;
+        color: #FF5722;
+        font-weight: bold;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+    
+    .password-char:focus {
+        border-color: #FF5722;
+        box-shadow: 0 4px 15px rgba(255, 87, 34, 0.3);
+        outline: none;
+        transform: translateY(-3px);
+    }
+    
+    .password-char.error {
+        animation: shake 0.5s;
+        border-color: #F44336;
+        background-color: #FFEBEE;
+    }
+    
+    .password-error {
+        color: #F44336;
+        margin-bottom: 15px;
+        font-weight: 600;
+        height: 20px;
+    }
+    
+    .password-submit-btn {
+        padding: 12px 25px;
+        background: linear-gradient(135deg, #FF9800 0%, #FF5722 100%);
+        color: white;
+        border: none;
+        border-radius: 30px;
+        font-family: 'Quicksand', sans-serif;
+        font-weight: 600;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(255, 152, 0, 0.3);
+    }
+    
+    .password-submit-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(255, 152, 0, 0.4);
+    }
+    
+    .password-hint-text {
+        margin-top: 20px;
+        color: #FF9800;
+        font-size: 0.95rem;
+        font-style: italic;
+    }
+    
+    .gift-password-close {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        width: 30px;
+        height: 30px;
+        background: #f5f5f5;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        color: #666;
+        transition: all 0.3s ease;
+    }
+    
+    .gift-password-close:hover {
+        background: #FF9800;
+        color: white;
+        transform: rotate(90deg);
+    }
+    
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        20%, 60% { transform: translateX(-5px); }
+        40%, 80% { transform: translateX(5px); }
+    }
+    
+    /* Hidden Question Button */
+    .hidden-question-button {
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        background: rgba(255, 152, 0, 0.6);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.8rem;
+        color: white;
+        cursor: pointer;
+        opacity: 0;
+        transition: all 0.3s ease;
+        z-index: 5;
+        right: 15px;  /* Position it in the bottom right of the gift box */
+        bottom: 15px;
+    }
+    
+    .hidden-question-button:hover {
+        transform: scale(1.2);
+        background: #FF5722;
+        box-shadow: 0 0 10px rgba(255, 87, 34, 0.5);
+    }
+    
+    .gift-box-container:hover .hidden-question-button {
+        opacity: 0.2;  /* Make it barely visible on hover */
+    }
+    
+    /* Flower Hint System */
+    .flower-hint-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, rgba(255, 193, 7, 0.9) 0%, rgba(255, 87, 34, 0.9) 100%);
+        z-index: 3100;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+    }
+    
+    .flower-hint-overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    .flower-hint-close {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        width: 40px;
+        height: 40px;
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        color: white;
+        font-size: 1.2rem;
+        transition: all 0.3s ease;
+        z-index: 1;
+    }
+    
+    .flower-hint-close:hover {
+        background: rgba(255, 255, 255, 0.5);
+        transform: rotate(90deg);
+    }
+    
+    .flower-bouquet-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        max-width: 600px;
+        gap: 40px;
+        padding: 30px;
+        position: relative;
+    }
+    
+    .flower {
+        position: relative;
+        width: 120px;
+        height: 120px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        transform-style: preserve-3d;
+        perspective: 600px;
+    }
+    
+    .flower:hover {
+        transform: scale(1.1) rotate(5deg);
+    }
+    
+    .flower-petal {
+        position: absolute;
+        width: 60px;
+        height: 60px;
+        background: white;
+        border-radius: 50%;
+        opacity: 0.9;
+        top: 20px;
+        left: 30px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .flower-petal:nth-child(1) {
+        transform: translateY(-30px);
+        background: #FFECB3;
+    }
+    
+    .flower-petal:nth-child(2) {
+        transform: translateX(30px) translateY(-15px);
+        background: #FFDEAE;
+    }
+    
+    .flower-petal:nth-child(3) {
+        transform: translateX(30px) translateY(15px);
+        background: #FFDBAA;
+    }
+    
+    .flower-petal:nth-child(4) {
+        transform: translateY(30px);
+        background: #FFD8A6;
+    }
+    
+    .flower-petal:nth-child(5) {
+        transform: translateX(-30px) translateY(0px);
+        background: #FFE3B5;
+    }
+    
+    .flower-center {
+        position: absolute;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #FF9800;
+        top: 40px;
+        left: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.5rem;
+        font-weight: bold;
+        z-index: 1;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+    }
+    
+    .flower:hover .flower-center {
+        background: #FF5722;
+        transform: scale(1.1);
+    }
+    
+    .flower.revealed .flower-center {
+        background: #4CAF50;
+    }
+    
+    .flower-1 .flower-petal {
+        background: #E8F5E9;
+    }
+    .flower-1 .flower-petal:nth-child(2) {
+        background: #C8E6C9;
+    }
+    .flower-1 .flower-center {
+        background: #4CAF50;
+    }
+    .flower-1:hover .flower-center {
+        background: #388E3C;
+    }
+    
+    .flower-2 .flower-petal {
+        background: #E1F5FE;
+    }
+    .flower-2 .flower-petal:nth-child(2) {
+        background: #B3E5FC;
+    }
+    .flower-2 .flower-center {
+        background: #03A9F4;
+    }
+    .flower-2:hover .flower-center {
+        background: #0288D1;
+    }
+    
+    .flower-3 .flower-petal {
+        background: #F3E5F5;
+    }
+    .flower-3 .flower-petal:nth-child(2) {
+        background: #E1BEE7;
+    }
+    .flower-3 .flower-center {
+        background: #9C27B0;
+    }
+    .flower-3:hover .flower-center {
+        background: #7B1FA2;
+    }
+    
+    .flower-4 .flower-petal {
+        background: #FFF9C4;
+    }
+    .flower-4 .flower-petal:nth-child(2) {
+        background: #FFF59D;
+    }
+    .flower-4 .flower-center {
+        background: #FFC107;
+    }
+    .flower-4:hover .flower-center {
+        background: #FFA000;
+    }
+    
+    .letter-reveal-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0, 0, 0, 0.7);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        z-index: 10;
+    }
+    
+    .letter-reveal-container.active {
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    .letter-reveal {
+        background: white;
+        padding: 30px;
+        border-radius: 20px;
+        max-width: 80%;
+        text-align: center;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        transform: scale(0.9);
+        transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    
+    .letter-reveal-container.active .letter-reveal {
+        transform: scale(1);
+    }
+    
+    .letter-reveal-text {
+        font-size: 4rem;
+        font-weight: bold;
+        color: #FF5722;
+        margin-bottom: 20px;
+        font-family: 'Pacifico', cursive;
+    }
+    
+    .letter-reveal-hint {
+        font-size: 1.2rem;
+        color: #666;
+        line-height: 1.5;
+    }
+    
+    /* Enter Passcode Button */
+    .enter-passcode-btn {
+        position: absolute;
+        bottom: -60px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 12px 25px;
+        background: linear-gradient(135deg, #FF9800 0%, #FF5722 100%);
+        color: white;
+        border: none;
+        border-radius: 30px;
+        font-family: 'Quicksand', sans-serif;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(255, 87, 34, 0.3);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        z-index: 5;
+    }
+    
+    .enter-passcode-btn:hover {
+        transform: translateX(-50%) translateY(-3px);
+        box-shadow: 0 8px 20px rgba(255, 87, 34, 0.4);
+    }
+
+    /* Mobile responsiveness */
+    @media (max-width: 600px) {
+        .password-char {
+            width: 40px;
+            height: 50px;
+            font-size: 1.8rem;
+        }
+        
+        .flower {
+            width: 100px;
+            height: 100px;
+        }
+        
+        .flower-petal {
+            width: 50px;
+            height: 50px;
+            top: 15px;
+            left: 25px;
+        }
+        
+        .flower-center {
+            width: 35px;
+            height: 35px;
+            top: 30px;
+            left: 32px;
+            font-size: 1.3rem;
+        }
+        
+        .letter-reveal-text {
+            font-size: 3rem;
+        }
+        
+        .letter-reveal-hint {
+            font-size: 1rem;
+        }
+    }
+`;
+document.head.appendChild(styles);
+
+// 4. Get elements for event handlers
+const passwordChars = passwordOverlay.querySelectorAll('.password-char');
+const passwordError = passwordOverlay.querySelector('.password-error');
+const submitButton = passwordOverlay.querySelector('.password-submit-btn');
+const closePasswordButton = passwordOverlay.querySelector('.gift-password-close');
+const flowers = flowerHintOverlay.querySelectorAll('.flower');
+const letterRevealContainer = flowerHintOverlay.querySelector('.letter-reveal-container');
+const letterRevealText = flowerHintOverlay.querySelector('.letter-reveal-text');
+const letterRevealHint = flowerHintOverlay.querySelector('.letter-reveal-hint');
+const closeFlowerButton = flowerHintOverlay.querySelector('.flower-hint-close');
+
+// 5. Set up variables and utility functions
+let hasClickedGift = false;
+const CORRECT_PASSWORD = 'LOVE';
+
+// Safe function to play sounds if available
+function tryPlaySound(soundName) {
+    try {
+        if (window.playSound && window[soundName]) {
+            window.playSound(window[soundName]);
+        }
+    } catch(e) {}
+}
+
+// Safe function to show popup messages if available
+function tryShowPopup(message) {
+    try {
+        if (window.showPopupMessage) {
+            window.showPopupMessage(message);
+        }
+    } catch(e) {
+        console.log(message);
+    }
+}
+
+// Safe function to create confetti effects if available
+function tryCreateConfetti(x, y) {
+    try {
+        if (window.createConfettiBurst) {
+            window.createConfettiBurst(x, y);
+        }
+    } catch(e) {}
+}
+
+// 6. Build event handlers
+
+// Original gift click function - store and remove
+const originalGiftClick = giftBox.onclick;
+giftBox.onclick = null;
+
+// New gift click handler
+giftBox.addEventListener('click', function(event) {
+    // If already unlocked, open the gift normally
+    if (window.giftIsUnlocked) {
+        giftBox.classList.add('opened');
+        
+        // Reset surprise attributes
+        if (giftSurprise) {
+            giftSurprise.style.display = 'block';
+            giftSurprise.style.opacity = '1';
+            giftSurprise.style.visibility = 'visible';
+            giftSurprise.style.transform = 'translateY(-80px)';
+            giftSurprise.style.zIndex = '3';
+        }
+        
+        // Show popup with delay
+        setTimeout(() => {
+            if (giftPopup && giftPopupOverlay) {
+                giftPopup.style.display = 'block';
+                giftPopupOverlay.style.display = 'block';
+                giftPopup.classList.add('active');
+                giftPopupOverlay.classList.add('active');
+                tryPlaySound('giftReveal');
+            }
+        }, 1000);
+        
+        tryPlaySound('giftOpenSound');
+        return;
+    }
+    
+    // Prevent default behavior
+    event.preventDefault();
+    event.stopPropagation();
+    
+    // First click shows password prompt
+    if (!hasClickedGift) {
+        hasClickedGift = true;
+        passwordButton.style.display = 'flex';
+        
+        // Try to show popup message
+        tryShowPopup("This gift is locked! Find the hidden question mark to discover the password.");
+        
+        // Add lock icon animation
+        const lockIcon = document.createElement('div');
+        lockIcon.style.position = 'absolute';
+        lockIcon.style.top = '40%';
+        lockIcon.style.left = '50%';
+        lockIcon.style.transform = 'translate(-50%, -50%) scale(0)';
+        lockIcon.style.color = '#FF5722';
+        lockIcon.style.fontSize = '5rem';
+        lockIcon.style.zIndex = '10';
+        lockIcon.style.opacity = '0';
+        lockIcon.style.transition = 'all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+        lockIcon.innerHTML = '<i class="fas fa-lock"></i>';
+        
+        giftBox.appendChild(lockIcon);
+        
+        setTimeout(() => {
+            lockIcon.style.transform = 'translate(-50%, -50%) scale(1)';
+            lockIcon.style.opacity = '1';
+        }, 100);
+        
+        setTimeout(() => {
+            lockIcon.style.transform = 'translate(-50%, -50%) scale(0)';
+            lockIcon.style.opacity = '0';
+            setTimeout(() => lockIcon.remove(), 500);
+        }, 2000);
+        
+        // Update gift text if found
+        const giftText = document.querySelector('.gift-text');
+        if (giftText) {
+            giftText.textContent = "This gift requires a passcode to open!";
+        }
+        
+        tryPlaySound('clickSound');
+        return false;
+    }
+    
+    // Subsequent clicks show password overlay
+    passwordOverlay.classList.add('active');
+    passwordChars[0].focus();
+    tryPlaySound('clickSound');
+    
+    return false;
+});
+
+// Block gift box lid and other elements
+const giftBoxLid = giftBox.querySelector('.gift-box-lid');
+if (giftBoxLid) {
+    const originalLidClick = giftBoxLid.onclick;
+    giftBoxLid.onclick = function(event) {
+        if (!window.giftIsUnlocked) {
+            event.preventDefault();
+            event.stopPropagation();
+            giftBox.click();
+            return false;
+        }
+    };
+}
+
+// Hidden question mark button
+hiddenQuestionButton.addEventListener('click', function(e) {
+    e.stopPropagation();
+    flowerHintOverlay.classList.add('active');
+    tryPlaySound('popSound');
+});
+
+// Password button click
+passwordButton.addEventListener('click', function() {
+    passwordOverlay.classList.add('active');
+    passwordChars[0].focus();
+    tryPlaySound('clickSound');
+});
+
+// Close password overlay
+closePasswordButton.addEventListener('click', function() {
+    passwordOverlay.classList.remove('active');
+    tryPlaySound('clickSound');
+});
+
+// Close flower hint overlay
+closeFlowerButton.addEventListener('click', function() {
+    flowerHintOverlay.classList.remove('active');
+    tryPlaySound('clickSound');
+});
+
+// Flower click to reveal hints
+flowers.forEach(flower => {
+    flower.addEventListener('click', function() {
+        if (!this.classList.contains('revealed')) {
+            // Get letter and hint from data attributes
+            const letter = this.dataset.letter;
+            const hint = this.dataset.hint;
+            
+            // Update letter center
+            this.querySelector('.flower-center').textContent = letter;
+            
+            
+            // Show letter reveal overlay
+            letterRevealText.textContent = letter;
+            letterRevealHint.textContent = hint;
+            letterRevealContainer.classList.add('active');
+            
+            // Play sound
+            tryPlaySound('partyPopperSound');
+            
+            // Create a reveal animation
+            const centerX = this.offsetLeft + this.offsetWidth / 2;
+            const centerY = this.offsetTop + this.offsetHeight / 2;
+            tryCreateConfetti(centerX, centerY);
+        }
+    });
+});
+
+// Close letter reveal by clicking anywhere
+letterRevealContainer.addEventListener('click', function() {
+    this.classList.remove('active');
+    tryPlaySound('clickSound');
+});
+
+// Password input handling
+passwordChars.forEach((input, index) => {
+    input.addEventListener('input', function() {
+        this.value = this.value.toUpperCase();
+        passwordError.textContent = '';
+        
+        // Auto-focus next input
+        if (this.value.length === 1 && index < passwordChars.length - 1) {
+            passwordChars[index + 1].focus();
+        }
+        
+        // Auto-submit if all fields are filled
+        if (index === passwordChars.length - 1 && this.value.length === 1) {
+            const allFilled = Array.from(passwordChars).every(input => input.value.length === 1);
+            if (allFilled) {
+                setTimeout(validatePassword, 300);
+            }
+        }
+    });
+    
+    input.addEventListener('keydown', function(e) {
+        // Handle backspace
+        if (e.key === 'Backspace' && this.value.length === 0 && index > 0) {
+            passwordChars[index - 1].focus();
+        } else if (e.key === 'Enter') {
+            validatePassword();
+        }
+    });
+});
+
+// Submit button
+submitButton.addEventListener('click', validatePassword);
+
+// Validate password function
+function validatePassword() {
+    // Get entered password
+    let enteredPassword = '';
+    passwordChars.forEach(input => {
+        enteredPassword += input.value;
+    });
+    
+    // Check password (case-insensitive)
+    if (enteredPassword.toUpperCase() === CORRECT_PASSWORD) {
+        // Success
+        passwordError.textContent = 'Correct! Unlocking your gift...';
+        passwordError.style.color = '#4CAF50';
+        
+        // Play success sound
+        tryPlaySound('bigPopperSound');
+        
+        // Close password overlay and unlock gift
+        setTimeout(() => {
+            passwordOverlay.classList.remove('active');
+            window.giftIsUnlocked = true;
+            
+            // Add unlocked class to gift
+            giftBox.classList.add('unlocked');
+            
+            // Update gift text
+            const giftText = document.querySelector('.gift-text');
+            if (giftText) {
+                giftText.textContent = "Click the gift to unwrap your surprise!";
+            }
+            
+            // Show success message
+            tryShowPopup("Gift unlocked! Click to open your surprise!");
+            
+            // Add unlock animation
+            const unlockIcon = document.createElement('div');
+            unlockIcon.style.position = 'absolute';
+            unlockIcon.style.top = '40%';
+            unlockIcon.style.left = '50%';
+            unlockIcon.style.transform = 'translate(-50%, -50%) scale(0)';
+            unlockIcon.style.color = '#4CAF50';
+            unlockIcon.style.fontSize = '5rem';
+            unlockIcon.style.zIndex = '10';
+            unlockIcon.style.opacity = '0';
+            unlockIcon.style.transition = 'all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+            unlockIcon.innerHTML = '<i class="fas fa-unlock"></i>';
+            
+            giftBox.appendChild(unlockIcon);
+            
+            setTimeout(() => {
+                unlockIcon.style.transform = 'translate(-50%, -50%) scale(1)';
+                unlockIcon.style.opacity = '1';
+            }, 100);
+            
+            setTimeout(() => {
+                unlockIcon.style.transform = 'translate(-50%, -50%) scale(0)';
+                unlockIcon.style.opacity = '0';
+                setTimeout(() => unlockIcon.remove(), 500);
+            }, 2000);
+            
+            // Try to show confetti
+            try {
+                if (typeof window.createFallingConfetti === 'function') {
+                    window.createFallingConfetti();
+                }
+            } catch(e) {}
+            
+            // Hide password button and question button
+            passwordButton.style.display = 'none';
+            hiddenQuestionButton.style.display = 'none';
+        }, 1000);
+    } else {
+        // Error
+        passwordError.textContent = 'Incorrect password! Try again.';
+        passwordError.style.color = '#F44336';
+        
+        // Add shake effect
+        passwordChars.forEach(input => {
+            input.classList.add('error');
+            setTimeout(() => input.classList.remove('error'), 500);
+        });
+        
+        // Play error sound
+        tryPlaySound('balloonPopSound');
+        
+        // Clear inputs and focus first
+        setTimeout(() => {
+            passwordChars.forEach(input => {
+                input.value = '';
+            });
+            passwordChars[0].focus();
+        }, 200);
+    }
+}
+})();
+    </script>
+   
+  
+  
+  <!-- Simple Theme System -->
+
+  <!-- Enhanced Theme System -->
+<!--script src="enhanced-theme-system.js"></script-->
+<script>
+    // Complete Login System with No-Flash Transitions
+document.addEventListener('DOMContentLoaded', function() {
+    // DOM Elements
+    const loginOverlay = document.getElementById('loginOverlay');
+    const developmentOverlay = document.getElementById('developmentOverlay');
+    const birthdayContentWrapper = document.getElementById('birthdayContentWrapper');
+    const loginBtn = document.getElementById('loginBtn');
+    const devLogoutBtn = document.getElementById('devLogoutBtn');
+    const mainLogoutBtn = document.getElementById('mainLogoutBtn');
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
+    const errorMessage = document.getElementById('errorMessage');
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    
+    // User credentials - IMPORTANT: CHANGE THESE
+    const ADMIN_USER = {
+        username: 'birthday',
+        password: 'party123'
+    };
+    
+    // Target user who sees the birthday celebration
+    const TARGET_USER = {
+        username: 'special',
+        password: 'celebrate'
+    };
+    
+    // Inactivity timeout variables
+    let inactivityTimeout;
+    const INACTIVE_TIMEOUT = 60000; // 1 minute in milliseconds
+    
+    // Function to set up the inactivity timeout
+    function setupInactivityTimeout() {
+        clearTimeout(inactivityTimeout);
+        inactivityTimeout = setTimeout(function() {
+            logout('You\'ve been logged out due to inactivity');
+        }, INACTIVE_TIMEOUT);
+    }
+    
+    // Function to handle logout
+    function logout(message) {
+        // Remove logged in state
+        localStorage.removeItem('birthdayLoggedIn');
+        localStorage.removeItem('userType');
+        
+        // Hide all content first to prevent any flashes
+        birthdayContentWrapper.style.display = 'none';
+        developmentOverlay.style.display = 'none';
+        
+        // Show login overlay
+        loginOverlay.style.display = 'flex';
+        
+        // Hide main logout button if exists
+        if (mainLogoutBtn) {
+            mainLogoutBtn.style.display = 'none';
+        }
+        
+        // Clear inputs
+        usernameInput.value = '';
+        passwordInput.value = '';
+        usernameInput.focus();
+        
+        // Show a message if provided and if showPopupMessage exists
+        if (message && window.showPopupMessage) {
+            window.showPopupMessage(message);
+        }
+        
+        // Play sound if available
+        if (window.playSound && window.clickSound) {
+            window.playSound(window.clickSound);
+        }
+    }
+    
+    // Reset the timeout on user activity
+    function resetInactivityTimeout() {
+        if (localStorage.getItem('birthdayLoggedIn') === 'true') {
+            setupInactivityTimeout();
+        }
+    }
+    
+    // Add event listeners for user activity
+    document.addEventListener('mousemove', resetInactivityTimeout);
+    document.addEventListener('mousedown', resetInactivityTimeout);
+    document.addEventListener('keypress', resetInactivityTimeout);
+    document.addEventListener('touchstart', resetInactivityTimeout);
+    document.addEventListener('scroll', resetInactivityTimeout);
+    
+    // Initial setup based on login state
+    function initialSetup() {
+        // Default state: only login visible
+        loginOverlay.style.display = 'flex';
+        developmentOverlay.style.display = 'none';
+        birthdayContentWrapper.style.display = 'none';
+        
+        if (mainLogoutBtn) {
+            mainLogoutBtn.style.display = 'none';
+        }
+        
+        // Check if user is already logged in
+        if (localStorage.getItem('birthdayLoggedIn') === 'true') {
+            const userType = localStorage.getItem('userType');
+            
+            if (userType === 'target') {
+                // Target user: Show birthday content
+                loginOverlay.style.display = 'none';
+                developmentOverlay.style.display = 'none';
+                birthdayContentWrapper.style.display = 'block';
+                
+                // Show main logout button
+                if (mainLogoutBtn) {
+                    mainLogoutBtn.style.display = 'flex';
+                }
+            } else {
+                // Admin user: Show development overlay
+                loginOverlay.style.display = 'none';
+                developmentOverlay.style.display = 'flex';
+                birthdayContentWrapper.style.display = 'none';
+            }
+            
+            setupInactivityTimeout();
+        }
+    }
+    
+    // Run initial setup
+    initialSetup();
+    
+    // Set focus to username
+    usernameInput.focus();
+    
+    // Login button click
+    loginBtn.addEventListener('click', function() {
+        // Hide error and show loading
+        errorMessage.style.display = 'none';
+        loadingSpinner.style.display = 'block';
+        
+        // Get values
+        const username = usernameInput.value.trim().toLowerCase();
+        const password = passwordInput.value.trim();
+        
+        // Simulate server check with timeout
+        setTimeout(function() {
+            loadingSpinner.style.display = 'none';
+            
+            if (username === TARGET_USER.username && password === TARGET_USER.password) {
+                // Target user login - show birthday content
+                localStorage.setItem('birthdayLoggedIn', 'true');
+                localStorage.setItem('userType', 'target');
+                
+                // Hide login overlay first
+                loginOverlay.style.display = 'none';
+                
+                // Then show birthday content
+                birthdayContentWrapper.style.display = 'block';
+                
+                // Show main logout button
+                if (mainLogoutBtn) {
+                    mainLogoutBtn.style.display = 'flex';
+                }
+                
+                // Celebration effects
+                if (window.playSound && window.bigPopperSound) {
+                    window.playSound(window.bigPopperSound);
+                }
+                
+                if (window.createConfettiBurst) {
+                    window.createConfettiBurst(window.innerWidth / 2, window.innerHeight / 2);
+                }
+                
+                if (window.showPopupMessage) {
+                    window.showPopupMessage("Welcome to your birthday celebration!");
+                }
+            }
+            else if (username === ADMIN_USER.username && password === ADMIN_USER.password) {
+                // Admin user login - show development mode
+                localStorage.setItem('birthdayLoggedIn', 'true');
+                localStorage.setItem('userType', 'admin');
+                
+                // CRITICAL: Show development overlay BEFORE hiding login overlay
+                developmentOverlay.style.display = 'flex';
+                
+                // Only after dev overlay is ready, hide login
+                loginOverlay.style.display = 'none';
+                
+                // Ensure birthday content remains hidden
+                birthdayContentWrapper.style.display = 'none';
+                
+                if (window.playSound && window.clickSound) {
+                    window.playSound(window.clickSound);
+                }
+            } 
+            else {
+                // Failed login
+                errorMessage.style.display = 'block';
+                
+                // Clear password
+                passwordInput.value = '';
+                passwordInput.focus();
+                
+                if (window.playSound && window.balloonPopSound) {
+                    window.playSound(window.balloonPopSound);
+                }
+            }
+            
+            // Start inactivity monitoring if login successful
+            if (localStorage.getItem('birthdayLoggedIn') === 'true') {
+                setupInactivityTimeout();
+            }
+        }, 1000);
+    });
+    
+    // Development mode logout button
+    if (devLogoutBtn) {
+        devLogoutBtn.addEventListener('click', function() {
+            logout('Successfully logged out');
+        });
+    }
+    
+    // Main page logout button
+    if (mainLogoutBtn) {
+        mainLogoutBtn.addEventListener('click', function() {
+            logout('Successfully logged out');
+        });
+    }
+    
+    // Enter key press on password field
+    passwordInput.addEventListener('keyup', function(event) {
+        if (event.key === 'Enter') {
+            loginBtn.click();
+        }
+    });
+    
+    // Expose logout function globally
+    window.logoutBirthdayUser = function() {
+        logout('Successfully logged out');
+    };
+});
+</script>
+<script>
+    // Fix for music issues in the theme system
+    document.addEventListener('DOMContentLoaded', function() {
+        // Wait for the main scripts to load
+        setTimeout(function() {
+            // Fix music playback state persistence
+            const bgMusic = document.getElementById('bgMusic');
+            
+            if (bgMusic) {
+                // 1. Save music playing state in localStorage
+                window.addEventListener('beforeunload', function() {
+                    localStorage.setItem('music-was-playing', !bgMusic.paused);
+                    localStorage.setItem('music-position', bgMusic.currentTime);
+                });
+                
+                // 2. Check if music should be playing on page load
+                if (localStorage.getItem('music-was-playing') === 'true') {
+                    // Attempt to play music with user interaction requirement workaround
+                    const playAttempt = setInterval(function() {
+                        if (document.hasFocus()) {
+                            bgMusic.play()
+                                .then(function() {
+                                    // Update the music toggle button if it exists
+                                    const musicToggle = document.getElementById('musicToggle');
+                                    if (musicToggle) {
+                                        musicToggle.innerHTML = '<i class="fas fa-volume-up"></i>';
+                                    }
+                                    
+                                    // Set the music position
+                                    const savedPosition = parseFloat(localStorage.getItem('music-position') || 0);
+                                    if (!isNaN(savedPosition) && savedPosition > 0) {
+                                        bgMusic.currentTime = savedPosition;
+                                    }
+                                    
+                                    // Set the global playing state if it exists
+                                    if (typeof isMusicPlaying !== 'undefined') {
+                                        isMusicPlaying = true;
+                                    }
+                                    
+                                    clearInterval(playAttempt);
+                                })
+                                .catch(function(error) {
+                                    console.log('Auto-play failed (expected):', error);
+                                    // Will try again on next interval
+                                });
+                        }
+                    }, 1000);
+                    
+                    // Safety: clear interval after 10 seconds to prevent infinite attempts
+                    setTimeout(function() { clearInterval(playAttempt); }, 10000);
+                }
+            }
+            
+            // 3. Fix theme change music handling
+            const originalChangeBackgroundMusic = window.changeBackgroundMusic;
+            if (typeof originalChangeBackgroundMusic === 'function') {
+                window.changeBackgroundMusic = function(theme) {
+                    const bgMusic = document.getElementById('bgMusic');
+                    if (!bgMusic) {
+                        console.log("Background music element '#bgMusic' not found in the DOM.");
+                        return;
+                    }
+                    
+                    // Save current playback state
+                    const wasPlaying = !bgMusic.paused;
+                    const currentTimePercentage = bgMusic.duration ? bgMusic.currentTime / bgMusic.duration : 0;
+                    
+                    // Always update the original source if it's the default theme
+                    if (theme === 'default') {
+                        const defaultMusicPath = "sounds/Happy Birthday - Diljit Dosanjh.mp3";
+                        bgMusic.dataset.originalSrc = defaultMusicPath;
+                    }
+                    
+                    // Store original src if not already stored
+                    if (!bgMusic.dataset.originalSrc) {
+                        bgMusic.dataset.originalSrc = bgMusic.src || "sounds/Happy Birthday - Diljit Dosanjh.mp3";
+                    }
+                    
+                    // Set new music source based on theme with corrected paths
+                    let newSrc;
+                    switch (theme) {
+                        case 'default':
+                            newSrc = bgMusic.dataset.originalSrc;
+                            break;
+                        case 'neon':
+                            newSrc = "sounds/neon-theme-music.mp3";
+                            break;
+                        case 'pastel':
+                            newSrc = "sounds/happy-birthday-258264.mp3";
+                            break;
+                        case 'tropical':
+                            newSrc = "sounds/tropical-theme-music.mp3";
+                            break;
+                        case 'galaxy':
+                            newSrc = "sounds/galaxy-theme-music.mp3";
+                            break;
+                        case 'sunset':
+                            newSrc = "sounds/sunset-theme-music.mp3";
+                            break;
+                        case 'forest':
+                            newSrc = "sounds/forest-theme-music.mp3";
+                            break;
+                        case 'midnight':
+                            newSrc = "sounds/midnight-theme-music.mp3";
+                            break;
+                        case 'custom':
+                            newSrc = bgMusic.dataset.originalSrc; // Use default for custom
+                            break;
+                        default:
+                            newSrc = bgMusic.dataset.originalSrc;
+                    }
+                    
+                    // Check if the file exists before changing
+                    fetch(newSrc, { method: 'HEAD' })
+                        .then(response => {
+                            if (response.ok) {
+                                // File exists, proceed with change
+                                proceedWithMusicChange(newSrc);
+                            } else {
+                                // File doesn't exist, fallback to original
+                                console.log(`Theme music file not found: ${newSrc}, using default instead`);
+                                proceedWithMusicChange(bgMusic.dataset.originalSrc);
+                            }
+                        })
+                        .catch(error => {
+                            // Network error or other issue, fallback to original
+                            console.log(`Error checking theme music: ${error}, using default instead`);
+                            proceedWithMusicChange(bgMusic.dataset.originalSrc);
+                        });
+                    
+                    function proceedWithMusicChange(musicSrc) {
+                        // Fade out current audio if playing
+                        if (wasPlaying) {
+                            let volume = bgMusic.volume;
+                            const fadeOutInterval = setInterval(() => {
+                                if (volume > 0.1) {
+                                    volume -= 0.1;
+                                    bgMusic.volume = volume;
+                                } else {
+                                    clearInterval(fadeOutInterval);
+                                    bgMusic.pause();
+                                    
+                                    // Update the source
+                                    bgMusic.src = musicSrc;
+                                    bgMusic.volume = 0;
+                                    
+                                    // When metadata loaded, set time and fade in
+                                    bgMusic.addEventListener('loadedmetadata', function onLoadedMetadata() {
+                                        bgMusic.removeEventListener('loadedmetadata', onLoadedMetadata);
+                                        
+                                        if (!isNaN(bgMusic.duration)) {
+                                            bgMusic.currentTime = bgMusic.duration * currentTimePercentage;
+                                        }
+                                        
+                                        // Always update global state if it exists
+                                        if (typeof isMusicPlaying !== 'undefined') {
+                                            isMusicPlaying = true;
+                                        }
+                                        
+                                        // Update music toggle if it exists
+                                        const musicToggle = document.getElementById('musicToggle');
+                                        if (musicToggle) {
+                                            musicToggle.innerHTML = '<i class="fas fa-volume-up"></i>';
+                                        }
+                                        
+                                        bgMusic.play().then(() => {
+                                            // Fade in
+                                            let vol = 0;
+                                            const fadeInInterval = setInterval(() => {
+                                                if (vol < 0.9) {
+                                                    vol += 0.1;
+                                                    bgMusic.volume = vol;
+                                                } else {
+                                                    bgMusic.volume = 1;
+                                                    clearInterval(fadeInInterval);
+                                                }
+                                            }, 100);
+                                        }).catch(error => {
+                                            console.error(`Error playing audio file '${musicSrc}':`, error);
+                                        });
+                                    }, { once: true });
+                                    
+                                    // Add error listener for fallback
+                                    bgMusic.addEventListener('error', () => {
+                                        console.error(`Failed to load audio file: ${musicSrc}`);
+                                        bgMusic.src = bgMusic.dataset.originalSrc;
+                                        if (wasPlaying) {
+                                            bgMusic.play().catch(e => console.error("Fallback play failed:", e));
+                                        }
+                                    }, { once: true });
+                                }
+                            }, 100);
+                        } else {
+                            // Just update the source if not playing
+                            bgMusic.src = musicSrc;
+                        }
+                    }
+                };
+            }
+        }, 1000); // Wait for main scripts to initialize
+    });
+    </script>
+
+     <!-- Wish Popup Animation -->
+     <div class="wish-popup-container" id="wishPopupContainer"></div>
+    
+     <!-- Wish 3D Rain Animation Container -->
+     <div class="wish-rain-container" id="wishRainContainer"></div>
+     <!-- Theme Toggle and Panel -->
 </body>
 </html>
