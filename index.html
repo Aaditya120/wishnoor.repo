@@ -3707,6 +3707,305 @@ body {
     background: #000; /* Dark background to prevent any content flashes */
 }
 </style>
+    <style>
+        /* Enhanced Gallery Styles */
+        .gallery-section {
+            padding: 60px 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Gallery Controls */
+        .gallery-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            gap: 15px;
+        }
+
+        .gallery-nav-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: white;
+            border: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: #FF9800;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .gallery-nav-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            color: #FF5722;
+        }
+
+        .gallery-info {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #FF5722;
+            background: white;
+            padding: 8px 20px;
+            border-radius: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        body.theme-dark .gallery-nav-btn {
+            background: #333;
+            color: #81D4FA;
+        }
+
+        body.theme-dark .gallery-nav-btn:hover {
+            color: #29B6F6;
+        }
+
+        body.theme-dark .gallery-info {
+            background: #333;
+            color: #81D4FA;
+        }
+
+        /* Featured Photo Display */
+        .featured-photo-container {
+            width: 100%;
+            position: relative;
+            margin: 0 auto 30px;
+            perspective: 1000px;
+        }
+
+        .featured-photo {
+            width: 90%;
+            max-width: 800px;
+            height: 450px;
+            margin: 0 auto;
+            position: relative;
+            transform-style: preserve-3d;
+            transform: rotateY(0deg);
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .featured-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+            border-radius: 15px;
+        }
+
+        .featured-photo:hover img {
+            transform: scale(1.05);
+        }
+
+        .photo-details {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+            color: white;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+
+        .featured-photo:hover .photo-details {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .photo-caption {
+            font-family: 'Pacifico', cursive;
+            font-size: 1.5rem;
+            margin: 0;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+        }
+
+        /* Thumbnail Strip */
+        .thumbnail-strip-container {
+            position: relative;
+            width: 90%;
+            max-width: 800px;
+            margin: 0 auto 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .thumbnail-nav-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: white;
+            border: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            color: #FF9800;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+            z-index: 2;
+        }
+
+        .thumbnail-nav-btn:hover {
+            transform: scale(1.1);
+            color: #FF5722;
+        }
+
+        body.theme-dark .thumbnail-nav-btn {
+            background: #333;
+            color: #81D4FA;
+        }
+
+        body.theme-dark .thumbnail-nav-btn:hover {
+            color: #29B6F6;
+        }
+
+        .thumbnail-strip {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            padding: 10px 0;
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE and Edge */
+            flex-grow: 1;
+        }
+
+        .thumbnail-strip::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
+        }
+
+        .photo-thumbnail {
+            width: 80px;
+            height: 80px;
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            flex-shrink: 0;
+            position: relative;
+            transition: all 0.3s ease;
+            transform: scale(0.9);
+            opacity: 0.7;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .photo-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .photo-thumbnail.active {
+            transform: scale(1);
+            opacity: 1;
+            box-shadow: 0 8px 25px rgba(255, 87, 34, 0.3);
+            border: 3px solid #FF9800;
+        }
+
+        body.theme-dark .photo-thumbnail.active {
+            border-color: #81D4FA;
+            box-shadow: 0 8px 25px rgba(33, 150, 243, 0.3);
+        }
+
+        /* Gallery Actions */
+        .gallery-actions {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .gallery-action-btn {
+            padding: 12px 25px;
+            background: white;
+            color: #FF9800;
+            border: none;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .gallery-action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            color: #FF5722;
+        }
+
+        .gallery-action-btn i {
+            font-size: 1.1rem;
+        }
+
+        body.theme-dark .gallery-action-btn {
+            background: #333;
+            color: #81D4FA;
+        }
+
+        body.theme-dark .gallery-action-btn:hover {
+            color: #29B6F6;
+        }
+
+        /* Animation for photo changes */
+        @keyframes photoChange {
+            0% { opacity: 0; transform: scale(0.95); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .photo-change-animation {
+            animation: photoChange 0.5s forwards;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .featured-photo {
+                height: 350px;
+            }
+
+            .photo-thumbnail {
+                width: 60px;
+                height: 60px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .featured-photo {
+                height: 280px;
+            }
+
+            .photo-thumbnail {
+                width: 50px;
+                height: 50px;
+            }
+
+            .gallery-actions {
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .gallery-action-btn {
+                width: 100%;
+                max-width: 250px;
+                justify-content: center;
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- Login Overlay -->
@@ -3899,9 +4198,9 @@ body {
     <section class="avatar-section">
         <h2 class="section-title" id="avatarTitle">Choose Your Birthday Avatar</h2>
         <div class="avatar-container">
-            <img src="assests/images/Generated_Image.jpg" class="avatar-option" alt="Avatar 1">
-            <img src="assests/images/Generated_Image_2.jpg" class="avatar-option" alt="Avatar 2">
-            <img src="assests/images/Generated_Image_3.jpg" class="avatar-option" alt="Avatar 3">
+            <img src="assests/images/generated%20image/Generated_Image.jpg" class="avatar-option" alt="Avatar 1">
+            <img src="assests/images/generated%20image/Generated_Image_2.jpg" class="avatar-option" alt="Avatar 2">
+            <img src="assests/images/generated%20image/Generated_Image_3.jpg" class="avatar-option" alt="Avatar 3">
         </div>
         <img id="selectedAvatar" src="/api/placeholder/150/150" alt="Selected Avatar">
     </section>
@@ -4061,52 +4360,54 @@ body {
 
     <!-- Birthday Memory Gallery -->
     <section class="gallery-section">
-        <h2 class="section-title" id="galleryTitle"> Gallery</h2>
-        <div class="birthday-gallery" id="gallery">
-            <div class="photo-wrapper">
-                <div class="photo">
-                    <img src="assests/images/IMG_0025.jpg" alt="Memory 1">
-                </div>
-                <p class="photo-caption">Cake Time!</p>
+        <h2 class="section-title" id="galleryTitle">Photo Memories</h2>
+
+        <!-- Gallery Controls -->
+        <div class="gallery-controls">
+            <button id="prevPhoto" class="gallery-nav-btn">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <div class="gallery-info">
+                <span id="currentPhotoNum">1</span> / <span id="totalPhotos">0</span>
             </div>
-            <div class="photo-wrapper">
-                <div class="photo">
-                    <img src="assests/images/IMG_0024.jpg" alt="Memory 2">
-                </div>
-                <p class="photo-caption">fabulous</p>
-            </div>
-            <div class="photo-wrapper">
-                <div class="photo">
-                    <img src="assests/images/IMG_0023.jpg" alt="Memory 3">
-                </div>
-                <p class="photo-caption"></p>
-            </div>
-            <div class="photo-wrapper">
-                <div class="photo">
-                    <img src="assests/images/IMG_0026.jpg" alt="Memory 4">
-                </div>
-                <p class="photo-caption">Friends Forever</p>
-            </div>
-            <div class="photo-wrapper">
-                <div class="photo">
-                    <img src="assests/images/IMG-20231101-WA0028.jpg" alt="Memory 5">
-                </div>
-                <p class="photo-caption">Dance Party</p>
-            </div>
-            <div class="photo-wrapper">
-                <div class="photo">
-                    <img src="assests/images/20240417_184818.jpg" alt="Memory 6">
-                </div>
-                <p class="photo-caption">Silly Moments</p>
-            </div>
-            <div class="photo-wrapper">
-                <div class="photo">
-                    <img src="assests/images/WhatsApp Image 2025-03-15 at 20.50.26.jpeg" alt="Memory 7">
-                </div>
-                <p class="photo-caption">Best Day Ever</p>
-            </div>
-            
+            <button id="nextPhoto" class="gallery-nav-btn">
+                <i class="fas fa-chevron-right"></i>
+            </button>
         </div>
+
+        <!-- New Featured Photo Display -->
+        <div class="featured-photo-container">
+            <div class="featured-photo" id="featuredPhoto">
+                <img src="assests/images/IMG_0025.jpg" alt="Featured Memory" id="featuredPhotoImg">
+                <div class="photo-details">
+                    <p class="photo-caption" id="featuredPhotoCaption">Loading memories...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Thumbnail Strip -->
+        <div class="thumbnail-strip-container">
+            <button class="thumbnail-nav-btn" id="scrollLeft">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <div class="thumbnail-strip" id="thumbnailStrip">
+                <!-- Thumbnails will be inserted here by JavaScript -->
+            </div>
+            <button class="thumbnail-nav-btn" id="scrollRight">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+
+        <!-- Gallery Actions -->
+        <div class="gallery-actions">
+            <button id="shuffleGallery" class="gallery-action-btn">
+                <i class="fas fa-random"></i> Shuffle Photos
+            </button>
+            <button id="slideshowGallery" class="gallery-action-btn">
+                <i class="fas fa-play"></i> Start Slideshow
+            </button>
+        </div>
+
     </section>
 
     <!-- Gift Popup -->
@@ -7045,7 +7346,7 @@ function validatePassword() {
   <!-- Simple Theme System -->
 
   <!-- Enhanced Theme System -->
-<!--script src="enhanced-theme-system.js"></script-->
+
 <script>
     // Complete Login System with No-Flash Transitions
 document.addEventListener('DOMContentLoaded', function() {
@@ -7283,207 +7584,1431 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 });
 </script>
-<script>
-    // Fix for music issues in the theme system
-    document.addEventListener('DOMContentLoaded', function() {
-        // Wait for the main scripts to load
-        setTimeout(function() {
-            // Fix music playback state persistence
-            const bgMusic = document.getElementById('bgMusic');
-            
-            if (bgMusic) {
-                // 1. Save music playing state in localStorage
-                window.addEventListener('beforeunload', function() {
-                    localStorage.setItem('music-was-playing', !bgMusic.paused);
-                    localStorage.setItem('music-position', bgMusic.currentTime);
-                });
-                
-                // 2. Check if music should be playing on page load
-                if (localStorage.getItem('music-was-playing') === 'true') {
-                    // Attempt to play music with user interaction requirement workaround
-                    const playAttempt = setInterval(function() {
-                        if (document.hasFocus()) {
-                            bgMusic.play()
-                                .then(function() {
-                                    // Update the music toggle button if it exists
-                                    const musicToggle = document.getElementById('musicToggle');
-                                    if (musicToggle) {
-                                        musicToggle.innerHTML = '<i class="fas fa-volume-up"></i>';
-                                    }
-                                    
-                                    // Set the music position
-                                    const savedPosition = parseFloat(localStorage.getItem('music-position') || 0);
-                                    if (!isNaN(savedPosition) && savedPosition > 0) {
-                                        bgMusic.currentTime = savedPosition;
-                                    }
-                                    
-                                    // Set the global playing state if it exists
-                                    if (typeof isMusicPlaying !== 'undefined') {
-                                        isMusicPlaying = true;
-                                    }
-                                    
-                                    clearInterval(playAttempt);
-                                })
-                                .catch(function(error) {
-                                    console.log('Auto-play failed (expected):', error);
-                                    // Will try again on next interval
-                                });
-                        }
-                    }, 1000);
-                    
-                    // Safety: clear interval after 10 seconds to prevent infinite attempts
-                    setTimeout(function() { clearInterval(playAttempt); }, 10000);
+    <script>
+        // Enhanced Gallery with Random Photo Selection
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get essential DOM elements
+            const featuredPhoto = document.getElementById('featuredPhoto');
+            const featuredPhotoImg = document.getElementById('featuredPhotoImg');
+            const featuredPhotoCaption = document.getElementById('featuredPhotoCaption');
+            const thumbnailStrip = document.getElementById('thumbnailStrip');
+            const prevPhotoBtn = document.getElementById('prevPhoto');
+            const nextPhotoBtn = document.getElementById('nextPhoto');
+            const scrollLeftBtn = document.getElementById('scrollLeft');
+            const scrollRightBtn = document.getElementById('scrollRight');
+            const shuffleGalleryBtn = document.getElementById('shuffleGallery');
+            const slideshowGalleryBtn = document.getElementById('slideshowGallery');
+            const currentPhotoNum = document.getElementById('currentPhotoNum');
+            const totalPhotos = document.getElementById('totalPhotos');
+
+            // Gallery state
+            let currentPhotoIndex = 0;
+            let isSlideshow = false;
+            let slideshowInterval;
+
+            // Photo data - in a real scenario, this would be loaded from the server
+            // This simulates having a directory of photos
+            const photoData = [
+                {
+                    src: 'assests/images/IMG_0025.jpg',
+                    caption: 'Cake Time!'
+                },
+                {
+                    src: 'assests/images/IMG_0024.jpg',
+                    caption: 'Looking Fabulous'
+                },
+                {
+                    src: 'assests/images/IMG_0023.jpg',
+                    caption: 'Special Moments'
+                },
+                {
+                    src: 'assests/images/IMG_0026.jpg',
+                    caption: 'Friends Forever'
+                },
+                {
+                    src: 'assests/images/IMG-20231101-WA0028.jpg',
+                    caption: 'Dance Party'
+                },
+                {
+                    src: 'assests/images/20240417_184818.jpg',
+                    caption: 'Silly Moments'
+                },
+                {
+                    src: 'assests/images/WhatsApp Image 2025-03-15 at 20.50.26.jpeg',
+                    caption: 'Best Day Ever'
+                },
+                // Add paths to more photos here, or load them from a server API
+                // This is where you'd include paths to all 20+ photos
+                {
+                    src: 'assests/images/WhatsApp Image 2025-03-15 at 20.50.26.jpeg',
+                    caption: 'Best Day Ever'
+                },
+
+                { src: 'assests/images/WhatsApp Image 2025-03-25 at 16.54.46 (1).jpeg', caption: 'Grace in every frame.' },
+                { src: 'assests/images/WhatsApp Image 2025-03-25 at 16.54.47 (1).jpeg', caption: 'A picture of pure elegance.' },
+                { src: 'assests/images/WhatsApp Image 2025-03-25 at 16.54.47.jpeg', caption: 'Beauty that needs no filter.' },
+                { src: 'assests/images/WhatsApp Image 2025-03-25 at 16.54.48 (1).jpeg', caption: 'A glow that lights up the world.' },
+                { src: 'assests/images/WhatsApp Image 2025-03-25 at 16.54.48 (2).jpeg', caption: 'Radiance in every glance.' },
+                { src: 'assests/images/WhatsApp Image 2025-03-25 at 16.54.48.jpeg', caption: 'Elegance, confidence, and charm in one frame.' },
+                { src: 'assests/images/WhatsApp Image 2025-03-25 at 16.54.49 (1).jpeg', caption: 'Simply breathtaking.' },
+                { src: 'assests/images/WhatsApp Image 2025-03-25 at 16.54.49 (2).jpeg', caption: 'A beauty that speaks for itself.' },
+                { src: 'assests/images/WhatsApp Image 2025-03-25 at 16.54.49.jpeg', caption: 'A vision of perfection.' },
+                { src: 'assests/images/WhatsApp Image 2025-03-25 at 16.54.50 (1).jpeg', caption: 'Eyes that hold a universe of dreams.' },
+                { src: 'assests/images/WhatsApp Image 2025-03-25 at 16.54.50 (2).jpeg', caption: 'A timeless kind of beauty.' },
+                { src: 'assests/images/WhatsApp Image 2025-03-25 at 16.54.50.jpeg', caption: 'As stunning as a masterpiece.' },
+                { src: 'assests/images/WhatsApp Image 2025-03-25 at 16.54.51 (1).jpeg', caption: 'Beauty that captivates the soul.' },
+                { src: 'assests/images/WhatsApp Image 2025-03-25 at 16.54.51 (2).jpeg', caption: 'Graceful, elegant, and effortlessly beautiful.' },
+                { src: 'assests/images/WhatsApp Image 2025-03-25 at 16.54.51.jpeg', caption: 'A heart as beautiful as the smile.' },
+                { src: 'assests/images/WhatsApp Image 2025-03-25 at 16.54.52 (1).jpeg', caption: 'A charm that leaves the world in awe.' },
+                { src: 'assests/images/WhatsApp Image 2025-03-25 at 16.54.52 (2).jpeg', caption: 'Pure elegance in every detail.' },
+                { src: 'assests/images/WhatsApp Image 2025-03-25 at 16.54.52.jpeg', caption: 'A beauty that shines from within.' },
+                { src: 'assests/images/WhatsApp Image 2025-03-25 at 16.54.53 (1).jpeg', caption: 'Flawless in every way.' },
+                { src: 'assests/images/WhatsApp Image 2025-03-25 at 16.54.53 (2).jpeg', caption: 'A soul as beautiful as the face.' },
+                { src: 'assests/images/WhatsApp Image 2025-03-25 at 16.54.53.jpeg', caption: 'Effortlessly stunning, endlessly captivating.' }
+
+
+        ];
+
+            // Shuffle the photos array randomly
+            function shufflePhotos() {
+                // Fisher-Yates shuffle algorithm
+                let currentIndex = photoData.length;
+                let temporaryValue, randomIndex;
+
+                // While there remain elements to shuffle
+                while (currentIndex !== 0) {
+                    // Pick a remaining element
+                    randomIndex = Math.floor(Math.random() * currentIndex);
+                    currentIndex -= 1;
+
+                    // Swap it with the current element
+                    temporaryValue = photoData[currentIndex];
+                    photoData[currentIndex] = photoData[randomIndex];
+                    photoData[randomIndex] = temporaryValue;
+                }
+
+                // Reset current index and update display
+                currentPhotoIndex = 0;
+                updateGalleryDisplay();
+
+                // Add animation effect for shuffle
+                featuredPhoto.classList.add('photo-change-animation');
+                setTimeout(() => featuredPhoto.classList.remove('photo-change-animation'), 500);
+
+                // Play sound if available
+                if (window.playSound && window.clickSound) {
+                    window.playSound(window.clickSound);
+                }
+
+                // Show popup message if function is available
+                if (window.showPopupMessage) {
+                    window.showPopupMessage("Photos shuffled randomly!");
                 }
             }
-            
-            // 3. Fix theme change music handling
-            const originalChangeBackgroundMusic = window.changeBackgroundMusic;
-            if (typeof originalChangeBackgroundMusic === 'function') {
-                window.changeBackgroundMusic = function(theme) {
-                    const bgMusic = document.getElementById('bgMusic');
-                    if (!bgMusic) {
-                        console.log("Background music element '#bgMusic' not found in the DOM.");
-                        return;
-                    }
-                    
-                    // Save current playback state
-                    const wasPlaying = !bgMusic.paused;
-                    const currentTimePercentage = bgMusic.duration ? bgMusic.currentTime / bgMusic.duration : 0;
-                    
-                    // Always update the original source if it's the default theme
-                    if (theme === 'default') {
-                        const defaultMusicPath = "sounds/Happy Birthday - Diljit Dosanjh.mp3";
-                        bgMusic.dataset.originalSrc = defaultMusicPath;
-                    }
-                    
-                    // Store original src if not already stored
-                    if (!bgMusic.dataset.originalSrc) {
-                        bgMusic.dataset.originalSrc = bgMusic.src || "sounds/Happy Birthday - Diljit Dosanjh.mp3";
-                    }
-                    
-                    // Set new music source based on theme with corrected paths
-                    let newSrc;
-                    switch (theme) {
-                        case 'default':
-                            newSrc = bgMusic.dataset.originalSrc;
-                            break;
-                        case 'neon':
-                            newSrc = "sounds/neon-theme-music.mp3";
-                            break;
-                        case 'pastel':
-                            newSrc = "sounds/happy-birthday-258264.mp3";
-                            break;
-                        case 'tropical':
-                            newSrc = "sounds/tropical-theme-music.mp3";
-                            break;
-                        case 'galaxy':
-                            newSrc = "sounds/galaxy-theme-music.mp3";
-                            break;
-                        case 'sunset':
-                            newSrc = "sounds/sunset-theme-music.mp3";
-                            break;
-                        case 'forest':
-                            newSrc = "sounds/forest-theme-music.mp3";
-                            break;
-                        case 'midnight':
-                            newSrc = "sounds/midnight-theme-music.mp3";
-                            break;
-                        case 'custom':
-                            newSrc = bgMusic.dataset.originalSrc; // Use default for custom
-                            break;
-                        default:
-                            newSrc = bgMusic.dataset.originalSrc;
-                    }
-                    
-                    // Check if the file exists before changing
-                    fetch(newSrc, { method: 'HEAD' })
-                        .then(response => {
-                            if (response.ok) {
-                                // File exists, proceed with change
-                                proceedWithMusicChange(newSrc);
-                            } else {
-                                // File doesn't exist, fallback to original
-                                console.log(`Theme music file not found: ${newSrc}, using default instead`);
-                                proceedWithMusicChange(bgMusic.dataset.originalSrc);
-                            }
-                        })
-                        .catch(error => {
-                            // Network error or other issue, fallback to original
-                            console.log(`Error checking theme music: ${error}, using default instead`);
-                            proceedWithMusicChange(bgMusic.dataset.originalSrc);
-                        });
-                    
-                    function proceedWithMusicChange(musicSrc) {
-                        // Fade out current audio if playing
-                        if (wasPlaying) {
-                            let volume = bgMusic.volume;
-                            const fadeOutInterval = setInterval(() => {
-                                if (volume > 0.1) {
-                                    volume -= 0.1;
-                                    bgMusic.volume = volume;
-                                } else {
-                                    clearInterval(fadeOutInterval);
-                                    bgMusic.pause();
-                                    
-                                    // Update the source
-                                    bgMusic.src = musicSrc;
-                                    bgMusic.volume = 0;
-                                    
-                                    // When metadata loaded, set time and fade in
-                                    bgMusic.addEventListener('loadedmetadata', function onLoadedMetadata() {
-                                        bgMusic.removeEventListener('loadedmetadata', onLoadedMetadata);
-                                        
-                                        if (!isNaN(bgMusic.duration)) {
-                                            bgMusic.currentTime = bgMusic.duration * currentTimePercentage;
-                                        }
-                                        
-                                        // Always update global state if it exists
-                                        if (typeof isMusicPlaying !== 'undefined') {
-                                            isMusicPlaying = true;
-                                        }
-                                        
-                                        // Update music toggle if it exists
-                                        const musicToggle = document.getElementById('musicToggle');
-                                        if (musicToggle) {
-                                            musicToggle.innerHTML = '<i class="fas fa-volume-up"></i>';
-                                        }
-                                        
-                                        bgMusic.play().then(() => {
-                                            // Fade in
-                                            let vol = 0;
-                                            const fadeInInterval = setInterval(() => {
-                                                if (vol < 0.9) {
-                                                    vol += 0.1;
-                                                    bgMusic.volume = vol;
-                                                } else {
-                                                    bgMusic.volume = 1;
-                                                    clearInterval(fadeInInterval);
-                                                }
-                                            }, 100);
-                                        }).catch(error => {
-                                            console.error(`Error playing audio file '${musicSrc}':`, error);
-                                        });
-                                    }, { once: true });
-                                    
-                                    // Add error listener for fallback
-                                    bgMusic.addEventListener('error', () => {
-                                        console.error(`Failed to load audio file: ${musicSrc}`);
-                                        bgMusic.src = bgMusic.dataset.originalSrc;
-                                        if (wasPlaying) {
-                                            bgMusic.play().catch(e => console.error("Fallback play failed:", e));
-                                        }
-                                    }, { once: true });
-                                }
-                            }, 100);
-                        } else {
-                            // Just update the source if not playing
-                            bgMusic.src = musicSrc;
+
+            // Initialize the thumbnail strip
+            function initThumbnails() {
+                thumbnailStrip.innerHTML = '';
+
+                photoData.forEach((photo, index) => {
+                    const thumbnail = document.createElement('div');
+                    thumbnail.className = `photo-thumbnail ${index === currentPhotoIndex ? 'active' : ''}`;
+                    thumbnail.dataset.index = index;
+
+                    const thumbnailImg = document.createElement('img');
+                    thumbnailImg.src = photo.src;
+                    thumbnailImg.alt = photo.caption;
+
+                    thumbnail.appendChild(thumbnailImg);
+                    thumbnailStrip.appendChild(thumbnail);
+
+                    // Add click event to thumbnail
+                    thumbnail.addEventListener('click', function() {
+                        currentPhotoIndex = parseInt(this.dataset.index);
+                        updateGalleryDisplay();
+
+                        // Play sound if available
+                        if (window.playSound && window.clickSound) {
+                            window.playSound(window.clickSound);
                         }
-                    }
-                };
+                    });
+                });
+
+                // Update total photos count
+                totalPhotos.textContent = photoData.length;
             }
-        }, 1000); // Wait for main scripts to initialize
-    });
+
+            // Update the gallery display
+            function updateGalleryDisplay() {
+                // Validate index
+                if (currentPhotoIndex < 0) currentPhotoIndex = photoData.length - 1;
+                if (currentPhotoIndex >= photoData.length) currentPhotoIndex = 0;
+
+                // Update featured photo
+                featuredPhotoImg.src = photoData[currentPhotoIndex].src;
+                featuredPhotoCaption.textContent = photoData[currentPhotoIndex].caption;
+
+                // Update current photo number
+                currentPhotoNum.textContent = currentPhotoIndex + 1;
+
+                // Update thumbnails - mark active thumbnail
+                const thumbnails = thumbnailStrip.querySelectorAll('.photo-thumbnail');
+                thumbnails.forEach(thumb => {
+                    thumb.classList.remove('active');
+                    if (parseInt(thumb.dataset.index) === currentPhotoIndex) {
+                        thumb.classList.add('active');
+
+                        // Scroll thumbnail into view
+                        const stripWidth = thumbnailStrip.offsetWidth;
+                        const thumbLeft = thumb.offsetLeft;
+                        const thumbWidth = thumb.offsetWidth;
+                        const scrollPos = thumbLeft - (stripWidth / 2) + (thumbWidth / 2);
+                        thumbnailStrip.scrollTo({
+                            left: scrollPos,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+
+                // Add animation effect for photo change
+                featuredPhoto.classList.add('photo-change-animation');
+                setTimeout(() => featuredPhoto.classList.remove('photo-change-animation'), 500);
+            }
+
+            // Show next photo
+            function showNextPhoto() {
+                currentPhotoIndex++;
+                updateGalleryDisplay();
+
+                // Play sound if available
+                if (window.playSound && window.popSound) {
+                    window.playSound(window.popSound);
+                }
+            }
+
+            // Show previous photo
+            function showPrevPhoto() {
+                currentPhotoIndex--;
+                updateGalleryDisplay();
+
+                // Play sound if available
+                if (window.playSound && window.popSound) {
+                    window.playSound(window.popSound);
+                }
+            }
+
+            // Scroll thumbnail strip
+            function scrollThumbnails(direction) {
+                const scrollAmount = direction === 'left' ? -300 : 300;
+                thumbnailStrip.scrollBy({
+                    left: scrollAmount,
+                    behavior: 'smooth'
+                });
+            }
+
+            // Toggle slideshow
+            function toggleSlideshow() {
+                isSlideshow = !isSlideshow;
+
+                if (isSlideshow) {
+                    // Start slideshow
+                    slideshowGalleryBtn.innerHTML = '<i class="fas fa-pause"></i> Pause Slideshow';
+                    slideshowInterval = setInterval(showNextPhoto, 3000);
+
+                    // Play sound if available
+                    if (window.playSound && window.clickSound) {
+                        window.playSound(window.clickSound);
+                    }
+
+                    // Show popup message if function is available
+                    if (window.showPopupMessage) {
+                        window.showPopupMessage("Slideshow started!");
+                    }
+                } else {
+                    // Stop slideshow
+                    slideshowGalleryBtn.innerHTML = '<i class="fas fa-play"></i> Start Slideshow';
+                    clearInterval(slideshowInterval);
+
+                    // Play sound if available
+                    if (window.playSound && window.clickSound) {
+                        window.playSound(window.clickSound);
+                    }
+
+                    // Show popup message if function is available
+                    if (window.showPopupMessage) {
+                        window.showPopupMessage("Slideshow paused!");
+                    }
+                }
+            }
+
+            // Set up event listeners
+            nextPhotoBtn.addEventListener('click', showNextPhoto);
+            prevPhotoBtn.addEventListener('click', showPrevPhoto);
+            scrollLeftBtn.addEventListener('click', () => scrollThumbnails('left'));
+            scrollRightBtn.addEventListener('click', () => scrollThumbnails('right'));
+            shuffleGalleryBtn.addEventListener('click', shufflePhotos);
+            slideshowGalleryBtn.addEventListener('click', toggleSlideshow);
+
+            // Keyboard navigation
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'ArrowRight') {
+                    showNextPhoto();
+                } else if (e.key === 'ArrowLeft') {
+                    showPrevPhoto();
+                }
+            });
+
+            // Initialize the gallery - shuffle on first load for randomness
+            shufflePhotos();
+            initThumbnails();
+
+            // Make these functions available outside
+            window.shuffleGalleryPhotos = shufflePhotos;
+            window.nextGalleryPhoto = showNextPhoto;
+            window.prevGalleryPhoto = showPrevPhoto;
+
+            console.log('Enhanced Gallery initialized with random photo selection');
+        });
+
+        // Adding instruction for integrating with existing codebase:
+        /*
+        To integrate this gallery with the existing birthday website:
+
+        1. Replace the current gallery section HTML with the HTML from the enhanced-gallery artifact
+        2. Add this JavaScript code to the end of your main JavaScript file or in a separate script tag
+        3. Modify the photoData array to include all your photo paths (20+ photos)
+        4. For actual production use, you might want to:
+           - Load photo paths from a JSON file or API
+           - Add lazy loading for better performance with many photos
+           - Add touch swipe support for mobile users
+        */
+    </script>
+    <!-- Complete Memory Garden Solution -->
+    <script>
+        // Complete Memory Garden Solution - Add this as a standalone script
+        (function() {
+            console.log("🌸 Complete Memory Garden Solution Starting");
+
+            // CONFIGURATION - List all your photos here
+            const allPhotos = [
+                // Copy and paste your filenames here
+                "IMG_0023.jpg",
+                "IMG_0024.jpg",
+                "IMG_0025.jpg",
+                "IMG_0026.jpg",
+                "IMG-20231101-WA0028.jpg",
+                "20240417_184818.jpg",
+                "WhatsApp Image 2025-03-15 at 20.50.26.jpeg",
+                "WhatsApp Image 2025-03-25 at 16.54.46 (1).jpeg",
+                "WhatsApp Image 2025-03-25 at 16.54.47 (1).jpeg",
+                "WhatsApp Image 2025-03-25 at 16.54.47.jpeg",
+                "WhatsApp Image 2025-03-25 at 16.54.48 (1).jpeg",
+                "WhatsApp Image 2025-03-25 at 16.54.48 (2).jpeg",
+                "WhatsApp Image 2025-03-25 at 16.54.48.jpeg",
+                "WhatsApp Image 2025-03-25 at 16.54.49 (1).jpeg",
+                "WhatsApp Image 2025-03-25 at 16.54.49 (2).jpeg",
+                "WhatsApp Image 2025-03-25 at 16.54.49.jpeg",
+                "WhatsApp Image 2025-03-25 at 16.54.50 (1).jpeg",
+                "WhatsApp Image 2025-03-25 at 16.54.50 (2).jpeg",
+                "WhatsApp Image 2025-03-25 at 16.54.50.jpeg",
+                " WhatsApp Image 2025-03-25 at 16.54.51 (1).jpeg",
+                " WhatsApp Image 2025-03-25 at 16.54.51 (2).jpeg",
+                "WhatsApp Image 2025-03-25 at 16.54.51.jpeg",
+                "WhatsApp Image 2025-03-25 at 16.54.52 (1).jpeg",
+                " WhatsApp Image 2025-03-25 at 16.54.52 (2).jpeg",
+                "WhatsApp Image 2025-03-25 at 16.54.52.jpeg",
+                "WhatsApp Image 2025-03-25 at 16.54.53 (1).jpeg",
+                "WhatsApp Image 2025-03-25 at 16.54.53 (2).jpeg",
+                "WhatsApp Image 2025-03-25 at 16.54.53.jpeg"
+                // Add as many more as you need
+            ];
+
+            // Base path to your images folder
+            const imageFolderPath = "assests/images/";
+
+            //// Updated photo processing function that uses generic captions
+            function processPhotoList(photoList) {
+                return photoList.filter(filename => filename.trim())
+                    .map((filename, index) => {
+                        let cleanName = filename.trim().replace(/^["']|["']$/g, '');
+
+                        // Generic caption that doesn't include the filename
+                        let caption = `Birthday Memory ${index + 1}`;
+
+                        // You can also use these more varied captions if you prefer
+                        const captions = [
+                            "Special Moment",
+                            "Happy Memory",
+                            "Wonderful Day",
+                            "Beautiful Time",
+                            "Precious Memory",
+                            "Perfect Moment",
+                            "Joyful Memory",
+                            "Unforgettable Day",
+                            "Cherished Moment",
+                            "Lovely Memory"
+                        ];
+
+                        // Use either a numbered caption or pick from the array
+                        // caption = captions[index % captions.length];
+
+                        return {
+                            src: imageFolderPath + cleanName,
+                            caption: caption
+                        };
+                    });
+            }
+
+            // Immediately add the Memory Garden button to the page
+            function addMemoryGardenButton() {
+                // Check if button already exists
+                if (document.getElementById('memoryGardenBtn')) return;
+
+                // Find where to add the button
+                const galleryActions = document.querySelector('.gallery-actions');
+
+                if (galleryActions) {
+                    // Add button to existing actions
+                    const btn = document.createElement('button');
+                    btn.id = 'memoryGardenBtn';
+                    btn.className = 'gallery-action-btn';
+                    btn.innerHTML = '<i class="fas fa-seedling"></i> Memory Garden';
+                    btn.style.background = '#FF9800';
+                    btn.style.color = 'white';
+                    galleryActions.appendChild(btn);
+                } else {
+                    // Create floating button
+                    const btn = document.createElement('button');
+                    btn.id = 'memoryGardenBtn';
+                    btn.innerHTML = '<i class="fas fa-seedling"></i> Memory Garden';
+                    btn.style.position = 'fixed';
+                    btn.style.bottom = '80px';
+                    btn.style.right = '20px';
+                    btn.style.zIndex = '1000';
+                    btn.style.padding = '12px 20px';
+                    btn.style.background = '#FF9800';
+                    btn.style.color = 'white';
+                    btn.style.border = 'none';
+                    btn.style.borderRadius = '30px';
+                    btn.style.cursor = 'pointer';
+                    btn.style.boxShadow = '0 5px 15px rgba(0,0,0,0.2)';
+                    btn.style.fontFamily = "'Quicksand', sans-serif";
+                    btn.style.fontWeight = 'bold';
+                    btn.style.fontSize = '16px';
+                    document.body.appendChild(btn);
+                }
+
+                // Add click event to button
+                const memoryGardenBtn = document.getElementById('memoryGardenBtn');
+                if (memoryGardenBtn) {
+                    memoryGardenBtn.addEventListener('click', function() {
+                        console.log("🌺 Memory Garden button clicked");
+
+                        // Create and show the garden
+                        createMemoryGarden();
+
+                        // Play sound if available
+                        if (window.playSound && window.popSound) {
+                            window.playSound(window.popSound);
+                        }
+                    });
+                }
+            }
+
+            // Create the Memory Garden
+            function createMemoryGarden() {
+                // Process photos
+                const photoData = processPhotoList(allPhotos);
+                console.log(`📷 Processed ${photoData.length} photos`);
+
+                // Create garden overlay if not exists
+                ensureGardenOverlay();
+
+                // Show the garden overlay
+                const gardenOverlay = document.getElementById('memoryGardenOverlay');
+                if (gardenOverlay) {
+                    gardenOverlay.style.display = 'flex';
+
+                    // Fade in animation
+                    setTimeout(() => {
+                        gardenOverlay.style.opacity = '1';
+                    }, 10);
+
+                    // Start growing the garden
+                    setTimeout(() => {
+                        growGarden(photoData);
+                    }, 500);
+                }
+            }
+
+            // Create the garden overlay
+            function ensureGardenOverlay() {
+                if (document.getElementById('memoryGardenOverlay')) return;
+
+                // Create styles
+                const styles = document.createElement('style');
+                styles.textContent = `
+            #memoryGardenOverlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: #ffefd5;
+                z-index: 2000;
+                display: none;
+                flex-direction: column;
+                align-items: center;
+                opacity: 0;
+                transition: opacity 0.5s ease;
+                overflow: auto;
+            }
+
+            body.theme-dark #memoryGardenOverlay {
+                background: #1E2A38;
+            }
+
+            .garden-title {
+                font-family: 'Pacifico', cursive;
+                font-size: 2.5rem;
+                margin: 30px 0 10px;
+                text-align: center;
+                background: linear-gradient(135deg, #FF9800, #FF5722);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                text-shadow: 0 2px 10px rgba(255, 152, 0, 0.1);
+            }
+
+            body.theme-dark .garden-title {
+                background: linear-gradient(135deg, #81D4FA, #29B6F6);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+
+            .garden-subtitle {
+                color: #FF9800;
+                font-size: 1.2rem;
+                margin-bottom: 30px;
+                text-align: center;
+            }
+
+            body.theme-dark .garden-subtitle {
+                color: #81D4FA;
+            }
+
+            .garden-close-btn {
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                background: white;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+                color: #FF9800;
+                font-size: 1.2rem;
+                transition: all 0.3s ease;
+                z-index: 10;
+            }
+
+            .garden-close-btn:hover {
+                transform: rotate(90deg);
+                color: #E65100;
+            }
+
+            body.theme-dark .garden-close-btn {
+                background: #263238;
+                color: #81D4FA;
+            }
+
+            body.theme-dark .garden-close-btn:hover {
+                color: #29B6F6;
+            }
+
+            .garden-container {
+                position: relative;
+                width: 100%;
+                max-width: 1200px;
+                min-height: 1500px;
+                padding: 0 20px 100px;
+            }
+
+            .garden-stem {
+                position: absolute;
+                width: 10px;
+                height: 0;
+                background: linear-gradient(to bottom, #8BC34A, #558B2F);
+                border-radius: 5px;
+                left: 50%;
+                top: 0;
+                transform: translateX(-50%);
+                z-index: 1;
+                animation: growStem 2s ease-out forwards;
+            }
+
+            body.theme-dark .garden-stem {
+                background: linear-gradient(to bottom, #388E3C, #1B5E20);
+            }
+
+            .garden-leaf {
+                position: absolute;
+                width: 40px;
+                height: 20px;
+                background: linear-gradient(to right, #8BC34A, #AED581);
+                border-radius: 50% 50% 50% 0;
+                opacity: 0;
+                transform: scale(0);
+                z-index: 2;
+                animation: growLeaf 0.5s ease-out forwards;
+            }
+
+            body.theme-dark .garden-leaf {
+                background: linear-gradient(to right, #388E3C, #66BB6A);
+            }
+
+            .garden-branch {
+                position: absolute;
+                height: 5px;
+                background: linear-gradient(to right, #8BC34A, #689F38);
+                transform-origin: center left;
+                width: 0;
+                z-index: 2;
+                animation: growBranch 1s ease-out forwards;
+            }
+
+            body.theme-dark .garden-branch {
+                background: linear-gradient(to right, #388E3C, #2E7D32);
+            }
+
+            .garden-flower {
+                position: absolute;
+                width: 220px;
+                height: 220px;
+                z-index: 3;
+            }
+
+            .flower-petal {
+                position: absolute;
+                width: 80px;
+                height: 80px;
+                border-radius: 50%;
+                overflow: hidden;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+                cursor: pointer;
+                border: 3px solid white;
+                z-index: 3;
+                opacity: 0;
+                transform: scale(0);
+                transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            }
+
+            .flower-petal:hover {
+                transform: scale(1.15) rotate(5deg);
+                box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+                z-index: 10;
+            }
+
+            .flower-petal img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                transition: transform 0.5s ease;
+            }
+
+            .flower-petal:hover img {
+                transform: scale(1.1);
+            }
+
+            .petal-caption {
+                position: absolute;
+                width: 100px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                background: rgba(255, 255, 255, 0.8);
+                color: #FF5722;
+                font-size: 12px;
+                padding: 3px 6px;
+                border-radius: 10px;
+                text-align: center;
+                opacity: 0;
+                transform: translateY(10px);
+                transition: all 0.3s ease;
+                pointer-events: none;
+                z-index: 20;
+            }
+
+            .flower-petal:hover + .petal-caption {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            body.theme-dark .flower-petal {
+                border-color: rgba(255, 255, 255, 0.2);
+            }
+
+            body.theme-dark .petal-caption {
+                background: rgba(38, 50, 56, 0.8);
+                color: #81D4FA;
+            }
+
+            .floating-particle {
+                position: absolute;
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                pointer-events: none;
+                z-index: 1;
+                opacity: 0.6;
+                animation: floatParticle 15s linear infinite;
+            }
+
+            .butterfly {
+                position: absolute;
+                width: 30px;
+                height: 30px;
+                z-index: 10;
+                pointer-events: none;
+                animation: butterflyFly 20s linear infinite;
+            }
+
+            .butterfly-wing {
+                position: absolute;
+                width: 15px;
+                height: 20px;
+                background: linear-gradient(135deg, #E91E63, #9C27B0);
+                border-radius: 50% 50% 0 50%;
+                animation: butterflyFlap 0.2s ease-in-out infinite alternate;
+            }
+
+            .butterfly-wing.left {
+                left: 0;
+                transform-origin: right center;
+            }
+
+            .butterfly-wing.right {
+                right: 0;
+                transform: scaleX(-1);
+                transform-origin: left center;
+            }
+
+            .garden-controls {
+                position: fixed;
+                bottom: 20px;
+                left: 0;
+                right: 0;
+                display: flex;
+                gap: 15px;
+                justify-content: center;
+                background: rgba(255, 239, 213, 0.8);
+                padding: 15px;
+                z-index: 50;
+                backdrop-filter: blur(5px);
+            }
+
+            body.theme-dark .garden-controls {
+                background: rgba(30, 42, 56, 0.8);
+            }
+
+            .garden-control-btn {
+                padding: 12px 20px;
+                background: white;
+                color: #FF9800;
+                border: none;
+                border-radius: 30px;
+                font-family: 'Quicksand', sans-serif;
+                font-weight: 600;
+                font-size: 0.9rem;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+                transition: all 0.3s ease;
+            }
+
+            .garden-control-btn:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+                color: #E65100;
+            }
+
+            body.theme-dark .garden-control-btn {
+                background: #263238;
+                color: #81D4FA;
+            }
+
+            body.theme-dark .garden-control-btn:hover {
+                color: #29B6F6;
+            }
+
+            .expanded-photo-container {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.9);
+                z-index: 3000;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+            }
+
+            .expanded-photo-container.active {
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .expanded-photo {
+                max-width: 90%;
+                max-height: 80%;
+                object-fit: contain;
+                border-radius: 10px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            }
+
+            .expanded-close-btn {
+                position: absolute;
+                top: 20px;
+                right: 20px;
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                background: rgba(255,255,255,0.2);
+                color: white;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                font-size: 1.2rem;
+                transition: all 0.3s ease;
+            }
+
+            .expanded-caption {
+                position: absolute;
+                bottom: 20px;
+                left: 0;
+                width: 100%;
+                text-align: center;
+                color: white;
+                font-size: 1.5rem;
+                font-family: 'Pacifico', cursive;
+                text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+            }
+
+            .expanded-filename {
+                position: absolute;
+                bottom: 70px;
+                left: 0;
+                width: 100%;
+                text-align: center;
+                color: #cccccc;
+                font-size: 1rem;
+                font-family: monospace;
+            }
+
+            .sun-moon {
+                position: absolute;
+                top: 40px;
+                right: 80px;
+                width: 60px;
+                height: 60px;
+                border-radius: 50%;
+                z-index: 1;
+                background: #FFD54F;
+                box-shadow: 0 0 30px rgba(255, 213, 79, 0.8);
+            }
+
+            body.theme-dark .sun-moon {
+                background: #B0BEC5;
+                box-shadow: 0 0 30px rgba(176, 190, 197, 0.5);
+            }
+
+            @keyframes growStem {
+                0% { height: 0; }
+                100% { height: 1300px; }
+            }
+
+            @keyframes growBranch {
+                0% { width: 0; }
+                100% { width: 150px; }
+            }
+
+            @keyframes growLeaf {
+                0% { transform: scale(0); opacity: 0; }
+                100% { transform: scale(1); opacity: 1; }
+            }
+
+            @keyframes bloomPetal {
+                0% { transform: scale(0); opacity: 0; }
+                70% { transform: scale(1.1); opacity: 1; }
+                100% { transform: scale(1); opacity: 1; }
+            }
+
+            @keyframes floatParticle {
+                0% { transform: translateY(100vh) rotate(0deg); }
+                100% { transform: translateY(-100px) rotate(360deg); }
+            }
+
+            @keyframes butterflyFlap {
+                0% { transform: rotate(5deg); }
+                100% { transform: rotate(-15deg); }
+            }
+
+            @keyframes butterflyFly {
+                0% { transform: translate(0, 0) rotate(0deg); }
+                25% { transform: translate(200px, -100px) rotate(20deg); }
+                50% { transform: translate(400px, 50px) rotate(-10deg); }
+                75% { transform: translate(200px, 200px) rotate(15deg); }
+                100% { transform: translate(0, 0) rotate(0deg); }
+            }
+
+            @media (max-width: 768px) {
+                .garden-title {
+                    font-size: 2rem;
+                }
+
+                .garden-subtitle {
+                    font-size: 1rem;
+                }
+
+                .garden-controls {
+                    flex-wrap: wrap;
+                }
+
+                .garden-control-btn {
+                    flex: 1;
+                    min-width: 120px;
+                    justify-content: center;
+                }
+
+                .flower-petal {
+                    width: 60px;
+                    height: 60px;
+                }
+            }
+        `;
+                document.head.appendChild(styles);
+
+                // Create overlay
+                const overlay = document.createElement('div');
+                overlay.id = 'memoryGardenOverlay';
+                overlay.innerHTML = `
+            <h2 class="garden-title">Magical Memory Garden</h2>
+            <div class="garden-subtitle">A garden of your special moments</div>
+            <div class="garden-close-btn">
+                <i class="fas fa-times"></i>
+            </div>
+            <div class="garden-container" id="gardenContainer"></div>
+            <div class="garden-controls">
+                <button id="regrowGardenBtn" class="garden-control-btn">
+                    <i class="fas fa-sync-alt"></i> Regrow Garden
+                </button>
+                <button id="addButterflyBtn" class="garden-control-btn">
+                    <i class="fas fa-bug"></i> Add Butterfly
+                </button>
+                <button id="toggleModeBtn" class="garden-control-btn">
+                    <i class="fas fa-moon"></i> Switch to Night
+                </button>
+            </div>
+        `;
+                document.body.appendChild(overlay);
+
+                // Create expanded photo view
+                if (!document.querySelector('.expanded-photo-container')) {
+                    const expandedContainer = document.createElement('div');
+                    expandedContainer.className = 'expanded-photo-container';
+                    expandedContainer.innerHTML = `
+                <img class="expanded-photo" src="" alt="">
+                <div class="expanded-caption"></div>
+                <div class="expanded-filename"></div>
+                <div class="expanded-close-btn"><i class="fas fa-times"></i></div>
+            `;
+                    document.body.appendChild(expandedContainer);
+
+                    // Add click events
+                    expandedContainer.querySelector('.expanded-close-btn').addEventListener('click', function() {
+                        expandedContainer.classList.remove('active');
+                    });
+
+                    expandedContainer.addEventListener('click', function(e) {
+                        if (e.target === expandedContainer) {
+                            expandedContainer.classList.remove('active');
+                        }
+                    });
+                }
+
+                // Add event listeners
+                const closeBtn = overlay.querySelector('.garden-close-btn');
+                closeBtn.addEventListener('click', function() {
+                    overlay.style.opacity = '0';
+                    setTimeout(() => {
+                        overlay.style.display = 'none';
+                    }, 500);
+                });
+
+                const regrowBtn = document.getElementById('regrowGardenBtn');
+                regrowBtn.addEventListener('click', function() {
+                    const gardenContainer = document.getElementById('gardenContainer');
+                    gardenContainer.innerHTML = '';
+
+                    // Process photos and regrow
+                    const photoData = processPhotoList(allPhotos);
+                    growGarden(photoData);
+
+                    // Show message if available
+                    if (window.showPopupMessage) {
+                        window.showPopupMessage("Your memory garden is growing anew! 🌱");
+                    }
+
+                    // Play sound if available
+                    if (window.playSound && window.popSound) {
+                        window.playSound(window.popSound);
+                    }
+                });
+
+                const butterflyBtn = document.getElementById('addButterflyBtn');
+                butterflyBtn.addEventListener('click', function() {
+                    addButterfly();
+
+                    // Show message if available
+                    if (window.showPopupMessage) {
+                        window.showPopupMessage("A butterfly has joined your garden! 🦋");
+                    }
+
+                    // Play sound if available
+                    if (window.playSound && window.clickSound) {
+                        window.playSound(window.clickSound);
+                    }
+                });
+
+                const modeBtn = document.getElementById('toggleModeBtn');
+                modeBtn.addEventListener('click', function() {
+                    document.body.classList.toggle('theme-dark');
+
+                    if (document.body.classList.contains('theme-dark')) {
+                        modeBtn.innerHTML = '<i class="fas fa-sun"></i> Switch to Day';
+                    } else {
+                        modeBtn.innerHTML = '<i class="fas fa-moon"></i> Switch to Night';
+                    }
+
+                    // Show message if available
+                    if (window.showPopupMessage) {
+                        const message = document.body.classList.contains('theme-dark')
+                            ? "Night mode activated! 🌙"
+                            : "Day mode activated! ☀️";
+                        window.showPopupMessage(message);
+                    }
+
+                    // Play sound if available
+                    if (window.playSound && window.clickSound) {
+                        window.playSound(window.clickSound);
+                    }
+                });
+            }
+
+            // Grow the garden with animation
+            function growGarden(photoData) {
+                const gardenContainer = document.getElementById('gardenContainer');
+                if (!gardenContainer) return;
+
+                // Clear container
+                gardenContainer.innerHTML = '';
+
+                // Create the sun/moon
+                const sunMoon = document.createElement('div');
+                sunMoon.className = 'sun-moon';
+                gardenContainer.appendChild(sunMoon);
+
+                // Create the main stem
+                const mainStem = document.createElement('div');
+                mainStem.className = 'garden-stem';
+                gardenContainer.appendChild(mainStem);
+
+                // Add background particles
+                createFloatingParticles();
+
+                // Add leaves with delay
+                setTimeout(() => {
+                    for (let i = 0; i < 10; i++) {
+                        setTimeout(() => {
+                            createLeaf(mainStem, i);
+                        }, i * 200);
+                    }
+                }, 1000);
+
+                // Shuffle photos
+                const shuffledPhotos = [...photoData].sort(() => Math.random() - 0.5);
+
+                // Determine how many flowers (6 photos per flower)
+                const flowerCount = Math.ceil(shuffledPhotos.length / 6);
+
+                // Create flowers on alternating sides
+                let photoIndex = 0;
+                setTimeout(() => {
+                    for (let i = 0; i < flowerCount; i++) {
+                        // Get photos for this flower
+                        const photosForFlower = Math.min(6, shuffledPhotos.length - photoIndex);
+                        const flowerPhotos = shuffledPhotos.slice(photoIndex, photoIndex + photosForFlower);
+                        photoIndex += photosForFlower;
+
+                        // Skip if not enough photos
+                        if (flowerPhotos.length < 3) continue;
+
+                        // Determine side and position
+                        const side = i % 2 === 0 ? 'left' : 'right';
+                        const verticalPosition = 150 + (i * 250);
+
+                        // Create with delay
+                        setTimeout(() => {
+                            createFlower(flowerPhotos, verticalPosition, side, i);
+                        }, i * 800);
+                    }
+                }, 2000);
+
+                // Add butterflies at the end
+                setTimeout(() => {
+                    for (let i = 0; i < 2; i++) {
+                        setTimeout(() => {
+                            addButterfly();
+                        }, i * 1000);
+                    }
+                }, 5000);
+            }
+
+            // Create a leaf
+            function createLeaf(stem, index) {
+                const leaf = document.createElement('div');
+                leaf.className = 'garden-leaf';
+
+                // Position leaf
+                const verticalPos = 100 + (index * 120);
+                const side = index % 2 === 0 ? 'left' : 'right';
+
+                leaf.style.top = `${verticalPos}px`;
+                leaf.style.animationDelay = `${index * 0.1}s`;
+
+                if (side === 'left') {
+                    leaf.style.left = '-35px';
+                    leaf.style.transform = 'scale(0) rotate(-40deg)';
+                    leaf.style.transformOrigin = 'right bottom';
+                } else {
+                    leaf.style.left = '10px';
+                    leaf.style.transform = 'scale(0) rotate(20deg)';
+                    leaf.style.transformOrigin = 'left bottom';
+                }
+
+                stem.appendChild(leaf);
+
+                // Play sound
+                if (window.playSound && window.clickSound && index % 2 === 0) {
+                    window.playSound(window.clickSound);
+                }
+            }
+
+            // Create a flower
+            function createFlower(photos, verticalPosition, side, flowerIndex) {
+                const gardenContainer = document.getElementById('gardenContainer');
+                if (!gardenContainer) return;
+
+                // Create flower container
+                const flower = document.createElement('div');
+                flower.className = 'garden-flower';
+                flower.style.top = `${verticalPosition}px`;
+
+                if (side === 'left') {
+                    flower.style.left = '25%';
+                } else {
+                    flower.style.left = '75%';
+                }
+
+                // Create branch
+                const branch = document.createElement('div');
+                branch.className = 'garden-branch';
+                branch.style.top = '50%';
+                branch.style.animationDelay = `${flowerIndex * 0.2}s`;
+
+                if (side === 'left') {
+                    branch.style.right = '-150px';
+                    branch.style.transform = 'rotate(0deg)';
+                } else {
+                    branch.style.left = '-150px';
+                    branch.style.transform = 'rotate(180deg)';
+                }
+
+                flower.appendChild(branch);
+                gardenContainer.appendChild(flower);
+
+                // Play branch sound
+                if (window.playSound && window.popSound) {
+                    window.playSound(window.popSound);
+                }
+
+                // Create petals with delay
+                setTimeout(() => {
+                    const petalsCount = photos.length;
+
+                    for (let i = 0; i < petalsCount; i++) {
+                        setTimeout(() => {
+                            // Create petal
+                            const petal = document.createElement('div');
+                            petal.className = 'flower-petal';
+                            petal.style.animationDelay = `${i * 0.1}s`;
+
+                            // Calculate position in circle
+                            const angle = (i / petalsCount) * Math.PI * 2;
+                            const radius = 70;
+                            const x = Math.cos(angle) * radius;
+                            const y = Math.sin(angle) * radius;
+
+                            petal.style.left = `calc(50% - 40px + ${x}px)`;
+                            petal.style.top = `calc(50% - 40px + ${y}px)`;
+
+                            // Add animation
+                            petal.style.animation = `bloomPetal 0.5s forwards ${i * 0.1}s`;
+
+                            // Create image
+                            const img = document.createElement('img');
+                            img.src = photos[i].src;
+                            img.alt = photos[i].caption;
+                            petal.appendChild(img);
+
+                            // Add click event
+                            petal.addEventListener('click', function() {
+                                showExpandedPhoto(photos[i]);
+                            });
+
+                            // Add caption element that shows on hover
+                            const caption = document.createElement('div');
+                            caption.className = 'petal-caption';
+                            caption.style.left = `calc(50% - 40px + ${x}px)`;
+                            caption.style.top = `calc(50% - 60px + ${y}px)`;
+                            caption.textContent = photos[i].caption;
+
+                            // Add to flower
+                            flower.appendChild(petal);
+                            flower.appendChild(caption);
+
+                            // Play petal sound
+                            if (window.playSound && window.clickSound && i % 2 === 0) {
+                                window.playSound(window.clickSound);
+                            }
+                        }, i * 300);
+                    }
+                }, 500);
+            }
+
+            // Create floating particles
+            function createFloatingParticles() {
+                const gardenContainer = document.getElementById('gardenContainer');
+                if (!gardenContainer) return;
+
+                const colors = ['#FF9800', '#FF5722', '#4CAF50', '#8BC34A', '#FFEB3B'];
+                if (document.body.classList.contains('theme-dark')) {
+                    colors = ['#29B6F6', '#81D4FA', '#4FC3F7', '#03A9F4', '#00BCD4'];
+                }
+
+                for (let i = 0; i < 20; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'floating-particle';
+
+                    // Random size
+                    const size = 5 + Math.random() * 8;
+                    particle.style.width = size + 'px';
+                    particle.style.height = size + 'px';
+
+                    // Random position
+                    particle.style.left = (Math.random() * 100) + '%';
+
+                    // Random color
+                    const color = colors[Math.floor(Math.random() * colors.length)];
+                    particle.style.background = color;
+
+                    // Random animation duration and delay
+                    const duration = 10 + Math.random() * 20;
+                    const delay = Math.random() * 10;
+                    particle.style.animationDuration = duration + 's';
+                    particle.style.animationDelay = delay + 's';
+
+                    gardenContainer.appendChild(particle);
+                }
+            }
+
+            // Add a butterfly
+            function addButterfly() {
+                const gardenContainer = document.getElementById('gardenContainer');
+                if (!gardenContainer) return;
+
+                const butterfly = document.createElement('div');
+                butterfly.className = 'butterfly';
+
+                // Random position
+                butterfly.style.left = (Math.random() * 80) + '%';
+                butterfly.style.top = (Math.random() * 80) + '%';
+
+                // Create wings
+                const leftWing = document.createElement('div');
+                leftWing.className = 'butterfly-wing left';
+
+                const rightWing = document.createElement('div');
+                rightWing.className = 'butterfly-wing right';
+
+                // Random color
+                const colors = [
+                    'linear-gradient(135deg, #E91E63, #9C27B0)',
+                    'linear-gradient(135deg, #FFEB3B, #FF9800)',
+                    'linear-gradient(135deg, #29B6F6, #0288D1)',
+                    'linear-gradient(135deg, #66BB6A, #388E3C)'
+                ];
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                leftWing.style.background = color;
+                rightWing.style.background = color;
+
+                // Random animation duration
+                const duration = 15 + Math.random() * 15;
+                butterfly.style.animationDuration = duration + 's';
+
+                // Assemble butterfly
+                butterfly.appendChild(leftWing);
+                butterfly.appendChild(rightWing);
+
+                gardenContainer.appendChild(butterfly);
+
+                // Remove butterfly after animation completes
+                setTimeout(() => {
+                    butterfly.remove();
+                }, duration * 1000);
+            }
+
+            // Show expanded photo
+            function showExpandedPhoto(photo) {
+                const expandedContainer = document.querySelector('.expanded-photo-container');
+                if (!expandedContainer) return;
+
+                const expandedPhoto = expandedContainer.querySelector('.expanded-photo');
+                const expandedCaption = expandedContainer.querySelector('.expanded-caption');
+                const expandedFilename = expandedContainer.querySelector('.expanded-filename');
+
+                expandedPhoto.src = photo.src;
+                expandedCaption.textContent = photo.caption;
+                expandedFilename.textContent = photo.filename;
+
+                expandedContainer.classList.add('active');
+
+                // Play sound if available
+                if (window.playSound && window.popSound) {
+                    window.playSound(window.popSound);
+                }
+            }
+
+            // Initialize
+            function initialize() {
+                console.log("🌱 Initializing Memory Garden");
+
+                // Add the button
+                addMemoryGardenButton();
+
+                // Check if already exists
+                if (document.getElementById('memoryGardenOverlay')) {
+                    console.log("🌸 Memory Garden already exists");
+                    return;
+                }
+
+                // Ensure Memory Garden overlay
+                ensureGardenOverlay();
+
+                console.log("🌸 Memory Garden initialized");
+            }
+
+            // Initialize immediately
+            initialize();
+
+            // Also initialize on load
+            if (document.readyState === 'complete') {
+                initialize();
+            } else {
+                window.addEventListener('load', initialize);
+            }
+
+            // Re-check after a delay to make sure button is added
+            setTimeout(addMemoryGardenButton, 2000);
+
+            console.log("🌸 Complete Memory Garden Solution Ready");
+        })();
+    </script>
+    <!-- Caption Removal Fix -->
+    <script>
+        // Caption Removal Fix - Add this after your existing garden code
+        (function() {
+            console.log("🏷️ Removing photo captions");
+
+            // Override the photo processing function to use empty captions
+            window.processPhotoList = function(photoList) {
+                return photoList.filter(filename => filename.trim())
+                    .map((filename, index) => {
+                        let cleanName = filename.trim().replace(/^["']|["']$/g, '');
+
+                        // Return with empty caption
+                        return {
+                            src: imageFolderPath + cleanName,
+                            caption: ""  // Empty caption
+                        };
+                    });
+            };
+
+            // Fix the expanded photo view to hide the caption element
+            const fixExpandedView = setInterval(() => {
+                const expandedCaption = document.querySelector('.expanded-caption');
+                if (expandedCaption) {
+                    expandedCaption.style.display = 'none';
+                    console.log("📝 Caption display hidden");
+                    clearInterval(fixExpandedView);
+                }
+            }, 500);
+
+            // Add this style to hide captions
+            const noCaptionStyle = document.createElement('style');
+            noCaptionStyle.textContent = `
+        /* Hide caption elements */
+        .expanded-caption {
+            display: none !important;
+        }
+    `;
+            document.head.appendChild(noCaptionStyle);
+
+            // If the Regrow Plant button exists, modify it to use our updated processing function
+            const checkForRegrowBtn = setInterval(() => {
+                const regrowBtn = document.getElementById('regrowPlantBtn');
+                if (regrowBtn) {
+                    // Preserve original click handler
+                    const originalClick = regrowBtn.onclick;
+
+                    // Add our handler that ensures captions are empty
+                    regrowBtn.addEventListener('click', function() {
+                        // Short delay to allow original handler to execute
+                        setTimeout(() => {
+                            // Find any visible captions and hide them
+                            const visibleCaptions = document.querySelectorAll('.expanded-caption');
+                            visibleCaptions.forEach(caption => {
+                                caption.style.display = 'none';
+                            });
+                        }, 500);
+                    }, true);
+
+                    clearInterval(checkForRegrowBtn);
+                }
+            }, 500);
+
+            console.log("🏷️ Caption removal complete");
+        })();
     </script>
 
      <!-- Wish Popup Animation -->
