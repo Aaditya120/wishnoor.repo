@@ -9010,6 +9010,296 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log("🏷️ Caption removal complete");
         })();
     </script>
+    <script src="enhanced-theme-system.js"></script>
+    <script>// Audio System Fix - Add this after your existing scripts
+    (function() {
+        console.log("🎵 Audio System Fix - Initializing");
+
+        // Global variables
+        let bgMusicElement;
+        let soundInitialized = false;
+        let fixAttempts = 0;
+        const MAX_FIX_ATTEMPTS = 5;
+
+        // Fix functions
+        function initAudioFix() {
+            // Wait for DOM to be ready
+            if (document.readyState === "loading") {
+                document.addEventListener("DOMContentLoaded", fixAudioSystem);
+            } else {
+                fixAudioSystem();
+            }
+
+            // Also try again after a delay
+            setTimeout(fixAudioSystem, 2000);
+        }
+
+        function fixAudioSystem() {
+            if (soundInitialized || fixAttempts >= MAX_FIX_ATTEMPTS) return;
+            fixAttempts++;
+
+            console.log(`🎵 Attempting to fix audio system (attempt ${fixAttempts}/${MAX_FIX_ATTEMPTS})`);
+
+            // Find the bgMusic element
+            bgMusicElement = document.getElementById('bgMusic');
+            if (!bgMusicElement) {
+                console.error("🎵 Background music element not found!");
+                return;
+            }
+
+            // Check if src exists and fix it if needed
+            if (!bgMusicElement.src || bgMusicElement.src === "" || bgMusicElement.src.includes("null")) {
+                fixMusicSource();
+            }
+
+            // Fix the sound init overlay
+            fixSoundInitOverlay();
+
+            // Add global audio helper functions
+            addGlobalAudioHelpers();
+        }
+
+        function fixMusicSource() {
+            if (!bgMusicElement) return;
+
+            // Check for empty source
+            const sourceElement = bgMusicElement.querySelector('source');
+            if (sourceElement && sourceElement.src) {
+                bgMusicElement.src = sourceElement.src;
+                console.log(`🎵 Setting bgMusic src from source element: ${bgMusicElement.src}`);
+            } else {
+                // Try to recover the path
+                const possiblePaths = [
+                    "assests/sounds/Happy Birthday - Diljit Dosanjh.mp3",
+                    "assets/sounds/Happy Birthday - Diljit Dosanjh.mp3",
+                    "assests/sounds/happy-birthday-258264.mp3"
+                ];
+
+                for (const path of possiblePaths) {
+                    if (doesFileExist(path)) {
+                        bgMusicElement.src = path;
+                        console.log(`🎵 Setting bgMusic src to: ${path}`);
+                        break;
+                    }
+                }
+            }
+
+            // Store the original source for theme changes
+            if (bgMusicElement.src && !bgMusicElement.dataset.originalSrc) {
+                bgMusicElement.dataset.originalSrc = bgMusicElement.src;
+                console.log(`🎵 Stored original music source: ${bgMusicElement.dataset.originalSrc}`);
+            }
+        }
+
+        function doesFileExist(url) {
+            // This is just a simple check - it can't actually verify if the file exists
+            // without making a network request, but we'll use it as a backup
+            return url && url.length > 0 && (url.includes('.mp3') || url.includes('.wav'));
+        }
+
+        function fixSoundInitOverlay() {
+            const soundInitOverlay = document.getElementById('soundInitOverlay');
+            const enableSoundBtn = document.getElementById('enableSoundBtn');
+            const disableSoundBtn = document.getElementById('disableSoundBtn');
+
+            if (!soundInitOverlay || !enableSoundBtn || !disableSoundBtn) {
+                console.error("🎵 Sound initialization overlay elements not found!");
+                return;
+            }
+
+            // Make sure the overlay is visible
+            soundInitOverlay.style.display = 'flex';
+
+            // Replace click handlers with fixed versions
+            enableSoundBtn.onclick = function() {
+                window.isSoundEnabled = true;
+                window.isMusicPlaying = true;
+
+                // Play background music with robust error handling
+                playBackgroundMusic();
+
+                // Update UI
+                const musicToggle = document.getElementById('musicToggle');
+                const soundToggle = document.getElementById('soundToggle');
+
+                if (musicToggle) musicToggle.innerHTML = '<i class="fas fa-volume-up"></i>';
+                if (soundToggle) soundToggle.innerHTML = '<i class="fas fa-music"></i>';
+
+                // Hide overlay
+                soundInitOverlay.style.display = 'none';
+
+                // Play sound effect
+                if (window.clickSound) playSound(window.clickSound);
+
+                soundInitialized = true;
+                console.log("🎵 Sound system successfully initialized!");
+            };
+
+            disableSoundBtn.onclick = function() {
+                window.isSoundEnabled = false;
+                window.isMusicPlaying = false;
+
+                // Update UI
+                const musicToggle = document.getElementById('musicToggle');
+                const soundToggle = document.getElementById('soundToggle');
+
+                if (musicToggle) musicToggle.innerHTML = '<i class="fas fa-volume-mute"></i>';
+                if (soundToggle) soundToggle.innerHTML = '<i class="fas fa-volume-mute"></i>';
+
+                // Hide overlay
+                soundInitOverlay.style.display = 'none';
+
+                soundInitialized = true;
+                console.log("🎵 Sound system initialized (disabled)");
+            };
+
+            console.log("🎵 Sound initialization overlay fixed");
+        }
+
+        function addGlobalAudioHelpers() {
+            // Add helper functions to window
+            window.playBackgroundMusic = function() {
+                if (!window.isSoundEnabled || !window.isMusicPlaying) return;
+
+                const bgMusic = document.getElementById('bgMusic');
+                if (!bgMusic) return;
+
+                // Ensure the source is set
+                if (!bgMusic.src) {
+                    fixMusicSource();
+                }
+
+                // Play with robust error handling
+                const playPromise = bgMusic.play();
+
+                if (playPromise !== undefined) {
+                    playPromise.then(_ => {
+                        console.log("🎵 Background music playing successfully");
+                    }).catch(error => {
+                        console.error("🎵 Play failed:", error);
+
+                        // Try again with user interaction
+                        const unlockAudio = function() {
+                            bgMusic.play();
+                            document.body.removeEventListener('click', unlockAudio);
+                            document.body.removeEventListener('touchstart', unlockAudio);
+                        };
+
+                        document.body.addEventListener('click', unlockAudio);
+                        document.body.addEventListener('touchstart', unlockAudio);
+                    });
+                }
+            };
+
+            // Override global playSound function
+            const originalPlaySound = window.playSound;
+            window.playSound = function(sound) {
+                if (!window.isSoundEnabled) return;
+
+                if (sound && typeof sound.play === 'function') {
+                    try {
+                        sound.currentTime = 0;
+                        sound.play().catch(err => console.log('Sound play failed:', err));
+                    } catch (err) {
+                        console.error("Failed to play sound:", err);
+                    }
+                } else if (typeof originalPlaySound === 'function') {
+                    originalPlaySound(sound);
+                }
+            };
+
+            // Fix music toggle functionality
+            const musicToggle = document.getElementById('musicToggle');
+            if (musicToggle) {
+                musicToggle.addEventListener('click', function() {
+                    const bgMusic = document.getElementById('bgMusic');
+                    if (!bgMusic) return;
+
+                    window.isMusicPlaying = !window.isMusicPlaying;
+
+                    if (window.isMusicPlaying) {
+                        playBackgroundMusic();
+                        this.innerHTML = '<i class="fas fa-volume-up"></i>';
+                    } else {
+                        bgMusic.pause();
+                        this.innerHTML = '<i class="fas fa-volume-mute"></i>';
+                    }
+
+                    // Play button click sound
+                    if (window.clickSound) {
+                        playSound(window.clickSound);
+                    }
+                });
+            }
+
+            // Fix sound toggle functionality
+            const soundToggle = document.getElementById('soundToggle');
+            if (soundToggle) {
+                soundToggle.addEventListener('click', function() {
+                    window.isSoundEnabled = !window.isSoundEnabled;
+
+                    this.innerHTML = window.isSoundEnabled ?
+                        '<i class="fas fa-music"></i>' :
+                        '<i class="fas fa-volume-mute"></i>';
+
+                    const bgMusic = document.getElementById('bgMusic');
+                    if (bgMusic) {
+                        if (window.isSoundEnabled && window.isMusicPlaying) {
+                            playBackgroundMusic();
+                        } else if (!window.isSoundEnabled) {
+                            bgMusic.pause();
+                        }
+                    }
+
+                    // Ironically, play a sound when toggling sound off/on
+                    if (window.clickSound && window.isSoundEnabled) {
+                        playSound(window.clickSound);
+                    }
+                });
+            }
+
+            console.log("🎵 Global audio helpers added");
+        }
+
+        // Fix for theme toggle - hook into existing functionality to play sounds
+        function fixThemeToggle() {
+            const themeToggleBtn = document.getElementById('themeToggleBtn');
+            if (!themeToggleBtn) return;
+
+            // Add sound to theme toggle without interfering with its functionality
+            themeToggleBtn.addEventListener('click', function() {
+                // Just play a sound when the button is clicked
+                if (window.clickSound && window.isSoundEnabled) {
+                    playSound(window.clickSound);
+                }
+            });
+        }
+
+        // Run the fix initially
+        initAudioFix();
+
+        // Fix theme toggle after a short delay
+        setTimeout(fixThemeToggle, 1000);
+
+        // Also try to fix after user login is complete
+        function checkLoginComplete() {
+            const birthdayContentWrapper = document.getElementById('birthdayContentWrapper');
+            if (birthdayContentWrapper && birthdayContentWrapper.style.display === 'block') {
+                console.log("🎵 Login complete detected, fixing audio...");
+                fixAudioSystem();
+                fixThemeToggle();
+                clearInterval(loginCheckInterval);
+            }
+        }
+        const loginCheckInterval = setInterval(checkLoginComplete, 1000);
+
+        // After 30 seconds, stop checking
+        setTimeout(() => clearInterval(loginCheckInterval), 30000);
+
+        console.log("🎵 Audio System Fix - Initialized");
+    })();
+    </script>
+
 
      <!-- Wish Popup Animation -->
      <div class="wish-popup-container" id="wishPopupContainer"></div>
