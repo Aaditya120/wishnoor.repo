@@ -1354,25 +1354,25 @@ document.addEventListener('DOMContentLoaded', () => {
         newSrc = bgMusic.dataset.originalSrc;
         break;
       case 'neon':
-        newSrc = "assests/sounds/neon-theme-music.mp3";
+        newSrc = "assests/sounds/Apsara Ringtone Ringtone (DjPunjab.is).mp3";
         break;
       case 'pastel':
         newSrc = "assests/sounds/happy-birthday-258264.mp3";
         break;
       case 'tropical':
-        newSrc = "assets/sounds/tropical-theme-music.mp3";
+        newSrc = "assests/sounds/Water - Diljit Dosanjh.mp3";
         break;
       case 'galaxy':
-        newSrc = "assets/sounds/galaxy-theme-music.mp3";
+        newSrc = "assests/sounds/Nain - Arjan Dhillon.mp3";
         break;
       case 'sunset':
-        newSrc = "assets/sounds/sunset-theme-music.mp3";
+        newSrc = "assests/sounds/Tareefan - DjPunjab.Com.Se.mp3";
         break;
       case 'forest':
-        newSrc = "assets/sounds/forest-theme-music.mp3";
+        newSrc = "assests/sounds/Naina Ke Teer Renuka Panwar 320 Kbps.mp3";
         break;
       case 'midnight':
-        newSrc = "assets/sounds/midnight-theme-music.mp3";
+        newSrc = "assests/sounds/Mehrma - The Prophec.mp3";
         break;
       case 'custom':
         newSrc = bgMusic.dataset.originalSrc; // Use default for custom
