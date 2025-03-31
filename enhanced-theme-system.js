@@ -1,17 +1,17 @@
 // Enhanced Theme System with Gallery Swapping and Smooth Transitions
 document.addEventListener('DOMContentLoaded', () => {
   console.log("Enhanced theme system initializing...");
-
+  
   // Step 1: Remove any previous theme elements and bottom theme chooser
   document.querySelectorAll('.multi-theme-panel, .multi-theme-btn, .toggle-theme-text, .theme-effect-element, .theme-buttons, [class*="Choose a Theme"]').forEach(el => el.remove());
-
+  
   // Step 2: Create a simple floating theme button with smoother animation
   const themeButton = document.createElement('button');
   themeButton.id = 'theme-palette-btn';
   themeButton.innerHTML = '<i class="fas fa-palette"></i>';
   themeButton.title = "Theme Gallery";
   document.body.appendChild(themeButton);
-
+  
   // Step 3: Create enhanced theme panel with previews
   const themePanel = document.createElement('div');
   themePanel.id = 'simple-theme-panel';
@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
     </div>
   `;
   document.body.appendChild(themePanel);
-
+  
   // Add customization panel
   const customizePanel = document.createElement('div');
   customizePanel.id = 'theme-customize-panel';
@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
     <button id="apply-custom-theme">Apply Custom Theme</button>
   `;
   document.body.appendChild(customizePanel);
-
+  
   // Step 4: Add enhanced CSS with smooth transitions
   const styleEl = document.createElement('style');
   styleEl.id = 'enhanced-theme-styles';
@@ -936,7 +936,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   `;
   document.head.appendChild(styleEl);
-
+  
   // Step 5: Create enhanced transition overlay
   const transitionOverlay = document.createElement('div');
   transitionOverlay.className = 'theme-transition-overlay';
@@ -946,17 +946,17 @@ document.addEventListener('DOMContentLoaded', () => {
     </div>
   `;
   document.body.appendChild(transitionOverlay);
-
+  
   // Create confetti container
   const confettiContainer = document.createElement('div');
   confettiContainer.className = 'confetti-container';
   document.body.appendChild(confettiContainer);
-
+  
   // Function to create confetti
   function createConfetti(theme) {
     // Clear previous confetti
     confettiContainer.innerHTML = '';
-
+    
     // Set colors based on theme
     let colors;
     switch(theme) {
@@ -984,18 +984,18 @@ document.addEventListener('DOMContentLoaded', () => {
       default:
         colors = ['#FF9800', '#FFB74D', '#FFA726', '#FFC107', '#FFD54F'];
     }
-
+    
     // Create 50 confetti pieces
     for (let i = 0; i < 50; i++) {
       const confetti = document.createElement('div');
       confetti.className = 'confetti';
-
+      
       const size = Math.random() * 10 + 5;
       const color = colors[Math.floor(Math.random() * colors.length)];
       const left = Math.random() * 100;
       const duration = Math.random() * 3 + 2;
       const delay = Math.random() * 2;
-
+      
       // Randomly choose between square, circle, and triangle
       const shape = Math.floor(Math.random() * 3);
       if (shape === 0) {
@@ -1007,23 +1007,23 @@ document.addEventListener('DOMContentLoaded', () => {
         // Triangle (using clip-path)
         confetti.style.clipPath = 'polygon(50% 0%, 0% 100%, 100% 100%)';
       }
-
+      
       confetti.style.setProperty('--color', color);
       confetti.style.setProperty('--duration', `${duration}s`);
       confetti.style.width = `${size}px`;
       confetti.style.height = `${size}px`;
       confetti.style.left = `${left}%`;
       confetti.style.animationDelay = `${delay}s`;
-
+      
       confettiContainer.appendChild(confetti);
     }
-
+    
     // Remove confetti after 5 seconds
     setTimeout(() => {
       confettiContainer.innerHTML = '';
     }, 5000);
   }
-
+  
   // Step 6: Add event listeners
   // Open panel when clicking the button
   themeButton.addEventListener('click', () => {
@@ -1034,7 +1034,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     } catch(e) {}
   });
-
+  
   // Close panel with close button
   themePanel.querySelector('.close-btn').addEventListener('click', () => {
     themePanel.classList.remove('active');
@@ -1044,7 +1044,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     } catch(e) {}
   });
-
+  
   // Close panel when clicking outside
   document.addEventListener('click', (e) => {
     if (!themePanel.contains(e.target) && !customizePanel.contains(e.target) && e.target !== themeButton) {
@@ -1052,50 +1052,50 @@ document.addEventListener('DOMContentLoaded', () => {
       customizePanel.classList.remove('active');
     }
   });
-
+  
   // Open customize panel
   document.getElementById('customize-theme-btn').addEventListener('click', () => {
     themePanel.classList.remove('active');
     customizePanel.classList.add('active');
-
+    
     try {
       if (typeof playSound === 'function' && window.clickSound) {
         playSound(clickSound);
       }
     } catch(e) {}
   });
-
+  
   // Back to theme panel
   customizePanel.querySelector('.back-btn').addEventListener('click', () => {
     customizePanel.classList.remove('active');
     themePanel.classList.add('active');
-
+    
     try {
       if (typeof playSound === 'function' && window.clickSound) {
         playSound(clickSound);
       }
     } catch(e) {}
   });
-
+  
   // Live preview for custom theme
   const customPreview = document.getElementById('custom-theme-preview');
   const primaryColor = document.getElementById('primary-color');
   const secondaryColor = document.getElementById('secondary-color');
-
+  
   function updateCustomPreview() {
     customPreview.style.background = `linear-gradient(135deg, ${primaryColor.value}, ${secondaryColor.value})`;
   }
-
+  
   primaryColor.addEventListener('input', updateCustomPreview);
   secondaryColor.addEventListener('input', updateCustomPreview);
-
+  
   // Apply custom theme
   document.getElementById('apply-custom-theme').addEventListener('click', () => {
     const primary = primaryColor.value;
     const secondary = secondaryColor.value;
     const bg = document.getElementById('bg-color').value;
     const text = document.getElementById('text-color').value;
-
+    
     // Create and add custom theme styles
     let customStyles = document.getElementById('custom-theme-styles');
     if (!customStyles) {
@@ -1103,7 +1103,7 @@ document.addEventListener('DOMContentLoaded', () => {
       customStyles.id = 'custom-theme-styles';
       document.head.appendChild(customStyles);
     }
-
+    
     customStyles.textContent = `
       body.theme-custom {
         background: ${bg} !important;
@@ -1151,29 +1151,29 @@ document.addEventListener('DOMContentLoaded', () => {
         background: linear-gradient(135deg, ${primary} 0%, ${secondary} 100%) !important;
       }
     `;
-
+    
     // Apply the custom theme
     applyTheme('custom');
-
+    
     // Save custom theme colors
     localStorage.setItem('custom-theme-primary', primary);
     localStorage.setItem('custom-theme-secondary', secondary);
     localStorage.setItem('custom-theme-bg', bg);
     localStorage.setItem('custom-theme-text', text);
-
+    
     customizePanel.classList.remove('active');
   });
-
+  
   // Theme category filtering
   document.querySelectorAll('.category-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       // Update active state
       document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-
+      
       const category = btn.dataset.category;
       const themeItems = document.querySelectorAll('.theme-item');
-
+      
       themeItems.forEach(item => {
         if (category === 'all' || item.dataset.category.includes(category)) {
           item.style.display = '';
@@ -1183,13 +1183,13 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
   });
-
+  
   // Theme search functionality
   const searchInput = document.getElementById('theme-search-input');
   searchInput.addEventListener('input', () => {
     const query = searchInput.value.toLowerCase();
     const themeItems = document.querySelectorAll('.theme-item');
-
+    
     themeItems.forEach(item => {
       const themeName = item.querySelector('.theme-label').textContent.toLowerCase();
       if (themeName.includes(query)) {
@@ -1199,12 +1199,12 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   });
-
+  
   // Function to apply a theme with enhanced transitions
   function applyTheme(theme) {
     // Show transition with loading spinner
     transitionOverlay.classList.add('active');
-
+    
     setTimeout(() => {
       // Remove all special theme classes
       document.body.classList.remove(
@@ -1217,51 +1217,51 @@ document.addEventListener('DOMContentLoaded', () => {
         'theme-midnight',
         'theme-custom'
       );
-
+      
       // Add the new theme if not default
       if (theme !== 'default') {
         document.body.classList.add(`theme-${theme}`);
       }
-
+      
       // Apply effects to all sections
       applyThemeToAllSections(theme);
-
+      
       // Swap gallery images
       swapGalleryImages(theme);
-
+      
       // Change background music
       changeBackgroundMusic(theme);
-
+      
       // Apply theme-specific visual effects
       applyThemeEffects(theme);
-
+      
       // Create confetti
       createConfetti(theme);
-
+      
       // Save theme preference
       localStorage.setItem('birthday-theme', theme);
-
+      
       // Show message
       try {
         if (typeof showPopupMessage === 'function') {
           showPopupMessage(`Theme applied successfully! 🎨`);
         }
       } catch(e) {}
-
+      
       // Play sound
       try {
         if (typeof playSound === 'function' && window.clickSound) {
           playSound(clickSound);
         }
       } catch(e) {}
-
+      
       // Hide transition overlay after animations complete
       setTimeout(() => {
         transitionOverlay.classList.remove('active');
       }, 800);
     }, 400);
   }
-
+  
   // Apply themes when clicking theme buttons
   themePanel.querySelectorAll('.theme-item').forEach(item => {
     item.addEventListener('click', () => {
@@ -1270,41 +1270,41 @@ document.addEventListener('DOMContentLoaded', () => {
       themePanel.classList.remove('active');
     });
   });
-
+  
   // Function to swap gallery images based on theme
   function swapGalleryImages(theme) {
     const gallery = document.getElementById('gallery');
     if (!gallery) return;
-
+  
     const photoWrappers = gallery.querySelectorAll('.photo-wrapper');
-
+  
     photoWrappers.forEach((wrapper, index) => {
       const photo = wrapper.querySelector('.photo img');
       if (!photo) return;
-
+  
       // Reset any existing effects
       photo.style.filter = '';
       photo.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
       wrapper.style.boxShadow = '';
       wrapper.style.transform = '';
-
+  
       // Fade out the image
       photo.style.opacity = '0';
       photo.style.transform = 'scale(0.9)';
-
+  
       // After a short delay, change the image source and fade it back in
       setTimeout(() => {
         // Construct the image path based on the theme and index
         const imagePath = `images/${theme}/photo${index + 1}.jpg`;
-
+  
         // Update the photo source to the new theme-specific image
         photo.src = imagePath;
-
+  
         // Add an onload handler to fade the image back in when loaded
         photo.onload = function() {
           photo.style.opacity = '1';
           photo.style.transform = 'scale(1)';
-
+          
           // Apply a subtle theme-specific filter if desired
           switch(theme) {
             case 'neon':
@@ -1318,7 +1318,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Add more theme-specific subtle filters as needed
           }
         };
-
+        
         // Error handler in case the image doesn't exist
         photo.onerror = function() {
           // Revert to original image or fallback
@@ -1329,7 +1329,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }, 300);
     });
   }
-
+  
   // Function to change background music based on theme
   function changeBackgroundMusic(theme) {
     const bgMusic = document.getElementById('bgMusic');
@@ -1337,16 +1337,16 @@ document.addEventListener('DOMContentLoaded', () => {
       console.log("Background music element '#bgMusic' not found in the DOM.");
       return;
     }
-
+  
     // Save current playback state
     const wasPlaying = !bgMusic.paused;
     const currentTimePercentage = bgMusic.duration ? bgMusic.currentTime / bgMusic.duration : 0;
-
+  
     // Store original src if not already stored
     if (!bgMusic.dataset.originalSrc) {
       bgMusic.dataset.originalSrc = bgMusic.src || "assets/sounds/default-theme-music.mp3";
     }
-
+  
     // Set new music source based on theme
     let newSrc;
     switch (theme) {
@@ -1354,25 +1354,25 @@ document.addEventListener('DOMContentLoaded', () => {
         newSrc = bgMusic.dataset.originalSrc;
         break;
       case 'neon':
-        newSrc = "assests/sounds/Apsara Ringtone Ringtone (DjPunjab.is).mp3";
+        newSrc = "sounds/neon/neon-theme-music.mp3";
         break;
       case 'pastel':
-        newSrc = "assests/sounds/happy-birthday-258264.mp3";
+        newSrc = "assets/sounds/pastel-theme-music.mp3";
         break;
       case 'tropical':
-        newSrc = "assests/sounds/Water - Diljit Dosanjh.mp3";
+        newSrc = "assets/sounds/tropical-theme-music.mp3";
         break;
       case 'galaxy':
-        newSrc = "assests/sounds/Nain - Arjan Dhillon.mp3";
+        newSrc = "assets/sounds/galaxy-theme-music.mp3";
         break;
       case 'sunset':
-        newSrc = "assests/sounds/Tareefan - DjPunjab.Com.Se.mp3";
+        newSrc = "assets/sounds/sunset-theme-music.mp3";
         break;
       case 'forest':
-        newSrc = "assests/sounds/Naina Ke Teer Renuka Panwar 320 Kbps.mp3";
+        newSrc = "assets/sounds/forest-theme-music.mp3";
         break;
       case 'midnight':
-        newSrc = "assests/sounds/Mehrma - The Prophec.mp3";
+        newSrc = "assets/sounds/midnight-theme-music.mp3";
         break;
       case 'custom':
         newSrc = bgMusic.dataset.originalSrc; // Use default for custom
@@ -1380,7 +1380,7 @@ document.addEventListener('DOMContentLoaded', () => {
       default:
         newSrc = bgMusic.dataset.originalSrc;
     }
-
+  
     // Fade out current audio
     if (wasPlaying) {
       const fadeOutInterval = setInterval(() => {
@@ -1389,17 +1389,17 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
           clearInterval(fadeOutInterval);
           bgMusic.pause();
-
+          
           // Update the source
           bgMusic.src = newSrc;
           bgMusic.volume = 0;
-
+          
           // When metadata loaded, set time and fade in
           bgMusic.addEventListener('loadedmetadata', function onLoadedMetadata() {
             if (!isNaN(bgMusic.duration)) {
               bgMusic.currentTime = bgMusic.duration * currentTimePercentage;
             }
-
+            
             bgMusic.play().then(() => {
               // Fade in
               const fadeInInterval = setInterval(() => {
@@ -1413,7 +1413,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }).catch(error => {
               console.error(`Error playing audio file '${newSrc}':`, error);
             });
-
+            
             bgMusic.removeEventListener('loadedmetadata', onLoadedMetadata);
           }, { once: true });
         }
@@ -1422,23 +1422,23 @@ document.addEventListener('DOMContentLoaded', () => {
       // Just update the source if not playing
       bgMusic.src = newSrc;
     }
-
+  
     // Add error listener for debugging
     bgMusic.addEventListener('error', () => {
       console.error(`Failed to load audio file: ${bgMusic.src}`);
     }, { once: true });
   }
-
+  
   // Function to apply theme effects to all sections with animations
   function applyThemeToAllSections(theme) {
     // Apply to all sections in the site
     const sections = document.querySelectorAll('section');
-
+    
     sections.forEach((section, index) => {
       // Add animation delay for staggered effect
       const delay = index * 0.1;
       section.style.transition = `background 0.5s ease ${delay}s, color 0.5s ease ${delay}s`;
-
+      
       // Remove any existing theme-specific classes
       section.classList.remove(
         'theme-neon-section',
@@ -1450,19 +1450,19 @@ document.addEventListener('DOMContentLoaded', () => {
         'theme-midnight-section',
         'theme-custom-section'
       );
-
+      
       // Add theme-specific class if not default
       if (theme !== 'default') {
         section.classList.add(`theme-${theme}-section`);
       }
     });
-
+    
     // Apply to specific elements that might need theme-specific styling
     document.querySelectorAll('.card, .birthday-cake, .gift-box, .firework-launcher, .wish-note').forEach((element, index) => {
       // Add animation delay
       const delay = index * 0.05 + 0.2;
       element.style.transition = `all 0.5s ease ${delay}s`;
-
+      
       // Remove existing theme classes
       element.classList.remove(
         'theme-neon-element',
@@ -1474,26 +1474,26 @@ document.addEventListener('DOMContentLoaded', () => {
         'theme-midnight-element',
         'theme-custom-element'
       );
-
+      
       // Add theme-specific class if not default
       if (theme !== 'default') {
         element.classList.add(`theme-${theme}-element`);
       }
     });
   }
-
+  
   // Enhanced theme effects with smoother transitions
   function applyThemeEffects(theme) {
     // Remove any existing theme effect elements with fade out animation
     document.querySelectorAll('.theme-effect-element').forEach(el => {
       el.style.transition = 'opacity 0.5s ease';
       el.style.opacity = '0';
-
+      
       setTimeout(() => {
         el.remove();
       }, 500);
     });
-
+    
     // Wait for removal animation to complete
     setTimeout(() => {
       // Apply different effects based on theme
@@ -1522,7 +1522,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }, 600);
   }
-
+  
   // Create a starfield for Galaxy theme
   function createStarfield() {
     const starfield = document.createElement('div');
@@ -1538,15 +1538,15 @@ document.addEventListener('DOMContentLoaded', () => {
       opacity: 0;
       transition: opacity 1s ease;
     `;
-
+    
     // Create stars with varying sizes and animations
     for (let i = 0; i < 150; i++) {
       const star = document.createElement('div');
       star.className = 'star';
-
+      
       const size = Math.random() * 3 + 1;
       const brightnessVar = Math.random() * 0.5 + 0.5; // For varied brightness
-
+      
       star.style.cssText = `
         position: absolute;
         width: ${size}px;
@@ -1561,15 +1561,15 @@ document.addEventListener('DOMContentLoaded', () => {
       `;
       starfield.appendChild(star);
     }
-
+    
     // Create 5 shooting stars
     for (let i = 0; i < 5; i++) {
       const shootingStar = document.createElement('div');
       shootingStar.className = 'shooting-star';
-
+      
       // Random angle
       const angle = Math.random() * 20 - 10;
-
+      
       shootingStar.style.cssText = `
         position: absolute;
         width: 80px;
@@ -1587,15 +1587,15 @@ document.addEventListener('DOMContentLoaded', () => {
       `;
       starfield.appendChild(shootingStar);
     }
-
+    
     // Create nebula effects
     for (let i = 0; i < 3; i++) {
       const nebula = document.createElement('div');
       nebula.className = 'nebula';
-
+      
       const size = Math.random() * 200 + 100;
       const colors = ['rgba(123, 44, 191, 0.2)', 'rgba(199, 125, 255, 0.2)', 'rgba(74, 0, 114, 0.2)'];
-
+      
       nebula.style.cssText = `
         position: absolute;
         width: ${size}px;
@@ -1610,15 +1610,15 @@ document.addEventListener('DOMContentLoaded', () => {
       `;
       starfield.appendChild(nebula);
     }
-
+    
     document.body.appendChild(starfield);
-
+    
     // Fade in the starfield
     setTimeout(() => {
       starfield.style.opacity = '1';
     }, 100);
   }
-
+  
   // Create enhanced neon effects
   function createNeonEffects() {
     const neonContainer = document.createElement('div');
@@ -1634,7 +1634,7 @@ document.addEventListener('DOMContentLoaded', () => {
       opacity: 0;
       transition: opacity 1s ease;
     `;
-
+    
     // Create neon lines with staggered appearance
     const colors = ['#f72585', '#4361ee', '#4cc9f0', '#480ca8'];
     for (let i = 0; i < 12; i++) {
@@ -1642,7 +1642,7 @@ document.addEventListener('DOMContentLoaded', () => {
       line.className = 'neon-line';
       const color = colors[Math.floor(Math.random() * colors.length)];
       const delay = i * 0.2;
-
+      
       line.style.cssText = `
         position: absolute;
         width: ${Math.random() * 300 + 100}px;
@@ -1657,7 +1657,7 @@ document.addEventListener('DOMContentLoaded', () => {
       `;
       neonContainer.appendChild(line);
     }
-
+    
     // Create neon glow circles
     for (let i = 0; i < 8; i++) {
       const glow = document.createElement('div');
@@ -1665,7 +1665,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const color = colors[Math.floor(Math.random() * colors.length)];
       const delay = i * 0.25 + 0.5;
       const size = Math.random() * 300 + 100;
-
+      
       glow.style.cssText = `
         position: absolute;
         width: ${size}px;
@@ -1680,7 +1680,7 @@ document.addEventListener('DOMContentLoaded', () => {
       `;
       neonContainer.appendChild(glow);
     }
-
+    
     // Create cyberpunk-style grid lines
     const grid = document.createElement('div');
     grid.className = 'neon-grid';
@@ -1701,15 +1701,15 @@ document.addEventListener('DOMContentLoaded', () => {
       animation: fade-in 2s ease forwards 1s;
     `;
     neonContainer.appendChild(grid);
-
+    
     document.body.appendChild(neonContainer);
-
+    
     // Fade in the container
     setTimeout(() => {
       neonContainer.style.opacity = '1';
     }, 100);
   }
-
+  
   // Create enhanced tropical effects
   function createTropicalEffects() {
     const tropicalContainer = document.createElement('div');
@@ -1725,7 +1725,7 @@ document.addEventListener('DOMContentLoaded', () => {
       opacity: 0;
       transition: opacity 1s ease;
     `;
-
+    
     // Create sun
     const sun = document.createElement('div');
     sun.className = 'tropical-sun';
@@ -1742,7 +1742,7 @@ document.addEventListener('DOMContentLoaded', () => {
       animation: fade-in 2s ease forwards;
     `;
     tropicalContainer.appendChild(sun);
-
+    
     // Create palm trees with staggered animation
     const palmPositions = [
       { bottom: 0, left: '5%', rotate: -5 },
@@ -1750,17 +1750,17 @@ document.addEventListener('DOMContentLoaded', () => {
       { bottom: 0, right: '5%', rotate: 5 },
       { bottom: 0, right: '15%', rotate: -5 }
     ];
-
+    
     palmPositions.forEach((pos, i) => {
       const palm = document.createElement('div');
       palm.className = 'palm-tree';
-
+      
       const positionStyle = Object.entries(pos)
         .map(([key, value]) => `${key}: ${value}${typeof value === 'number' ? 'deg' : ''};`)
         .join(' ');
-
+        
       const delay = i * 0.3;
-
+      
       palm.style.cssText = `
         position: absolute;
         ${positionStyle}
@@ -1775,7 +1775,7 @@ document.addEventListener('DOMContentLoaded', () => {
       `;
       tropicalContainer.appendChild(palm);
     });
-
+    
     // Create ocean waves
     const ocean = document.createElement('div');
     ocean.className = 'tropical-ocean';
@@ -1789,7 +1789,7 @@ document.addEventListener('DOMContentLoaded', () => {
       opacity: 0;
       animation: fade-in 2s ease forwards 0.5s;
     `;
-
+    
     // Add wave mask
     const waveMask = document.createElement('div');
     waveMask.className = 'wave-mask';
@@ -1805,20 +1805,20 @@ document.addEventListener('DOMContentLoaded', () => {
       animation: wave-move 20s linear infinite;
     `;
     ocean.appendChild(waveMask);
-
+    
     tropicalContainer.appendChild(ocean);
-
+    
     // Create clouds
     for (let i = 0; i < 5; i++) {
       const cloud = document.createElement('div');
       cloud.className = 'tropical-cloud';
-
+      
       const size = Math.random() * 100 + 50;
       const top = Math.random() * 30 + 5;
       const delay = i * 0.4;
       const duration = Math.random() * 100 + 100;
       const startPos = Math.random() * 100 - 20;
-
+      
       cloud.style.cssText = `
         position: absolute;
         width: ${size}px;
@@ -1831,7 +1831,7 @@ document.addEventListener('DOMContentLoaded', () => {
         opacity: 0;
         animation: fade-in 2s ease forwards ${delay}s, cloud-move ${duration}s linear infinite;
       `;
-
+      
       // Add additional blobs to make cloud shape
       for (let j = 0; j < 3; j++) {
         const blob = document.createElement('div');
@@ -1847,12 +1847,12 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
         cloud.appendChild(blob);
       }
-
+      
       tropicalContainer.appendChild(cloud);
     }
-
+    
     document.body.appendChild(tropicalContainer);
-
+    
     // Add the animation if it doesn't exist
     if (!document.getElementById('tropical-animation')) {
       const style = document.createElement('style');
@@ -1876,13 +1876,13 @@ document.addEventListener('DOMContentLoaded', () => {
       `;
       document.head.appendChild(style);
     }
-
+    
     // Fade in
     setTimeout(() => {
       tropicalContainer.style.opacity = '1';
     }, 100);
   }
-
+  
   // Create enhanced pastel effects
   function createPastelEffects() {
     const pastelContainer = document.createElement('div');
@@ -1898,7 +1898,7 @@ document.addEventListener('DOMContentLoaded', () => {
       opacity: 0;
       transition: opacity 1s ease;
     `;
-
+    
     // Create floating bubbles with staggered animation
     const colors = ['#ffafcc', '#bde0fe', '#a2d2ff', '#cdb4db', '#ffc8dd'];
     for (let i = 0; i < 20; i++) {
@@ -1907,11 +1907,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const color = colors[Math.floor(Math.random() * colors.length)];
       const size = Math.random() * 70 + 30;
       const delay = i * 0.15;
-
+      
       // Random x,y movement values
       const xMove = Math.random() * 100 - 50;
       const yMove = Math.random() * 100 - 50;
-
+      
       bubble.style.cssText = `
         position: absolute;
         width: ${size}px;
@@ -1928,7 +1928,7 @@ document.addEventListener('DOMContentLoaded', () => {
       `;
       pastelContainer.appendChild(bubble);
     }
-
+    
     // Create soft gradient background
     const gradientOverlay = document.createElement('div');
     gradientOverlay.className = 'pastel-gradient-overlay';
@@ -1944,7 +1944,7 @@ document.addEventListener('DOMContentLoaded', () => {
       animation: fade-in 2s ease forwards 0.5s;
     `;
     pastelContainer.appendChild(gradientOverlay);
-
+    
     // Add rainbow
     const rainbow = document.createElement('div');
     rainbow.className = 'pastel-rainbow';
@@ -1963,15 +1963,15 @@ document.addEventListener('DOMContentLoaded', () => {
       animation: fade-in 3s ease forwards 1s;
     `;
     pastelContainer.appendChild(rainbow);
-
+    
     document.body.appendChild(pastelContainer);
-
+    
     // Fade in
     setTimeout(() => {
       pastelContainer.style.opacity = '1';
     }, 100);
   }
-
+  
   // Create sunset effects
   function createSunsetEffects() {
     const sunsetContainer = document.createElement('div');
@@ -1987,7 +1987,7 @@ document.addEventListener('DOMContentLoaded', () => {
       opacity: 0;
       transition: opacity 1s ease;
     `;
-
+    
     // Create sunset gradient
     const sunsetGradient = document.createElement('div');
     sunsetGradient.className = 'sunset-gradient';
@@ -2002,7 +2002,7 @@ document.addEventListener('DOMContentLoaded', () => {
       animation: fade-in 2s ease forwards;
     `;
     sunsetContainer.appendChild(sunsetGradient);
-
+    
     // Create sun
     const sun = document.createElement('div');
     sun.className = 'sunset-sun';
@@ -2020,7 +2020,7 @@ document.addEventListener('DOMContentLoaded', () => {
       animation: fade-in 3s ease forwards 0.5s;
     `;
     sunsetContainer.appendChild(sun);
-
+    
     // Create mountains
     const mountains = document.createElement('div');
     mountains.className = 'sunset-mountains';
@@ -2039,17 +2039,17 @@ document.addEventListener('DOMContentLoaded', () => {
       animation: fade-in 2s ease forwards 1s;
     `;
     sunsetContainer.appendChild(mountains);
-
+    
     // Create birds
     for (let i = 0; i < 10; i++) {
       const bird = document.createElement('div');
       bird.className = 'sunset-bird';
-
+      
       const size = Math.random() * 5 + 5;
       const top = Math.random() * 40 + 10;
       const left = Math.random() * 80 + 10;
       const delay = i * 0.2 + 1.5;
-
+      
       bird.style.cssText = `
         position: absolute;
         top: ${top}%;
@@ -2065,9 +2065,9 @@ document.addEventListener('DOMContentLoaded', () => {
       `;
       sunsetContainer.appendChild(bird);
     }
-
+    
     document.body.appendChild(sunsetContainer);
-
+    
     // Add the animation if it doesn't exist
     if (!document.getElementById('sunset-animation')) {
       const style = document.createElement('style');
@@ -2083,13 +2083,13 @@ document.addEventListener('DOMContentLoaded', () => {
       `;
       document.head.appendChild(style);
     }
-
+    
     // Fade in
     setTimeout(() => {
       sunsetContainer.style.opacity = '1';
     }, 100);
   }
-
+  
   // Create forest effects
   function createForestEffects() {
     const forestContainer = document.createElement('div');
@@ -2105,7 +2105,7 @@ document.addEventListener('DOMContentLoaded', () => {
       opacity: 0;
       transition: opacity 1s ease;
     `;
-
+    
     // Create trees
     const treeColors = ['#2d6a4f', '#40916c', '#52b788', '#95d5b2'];
     const treePositions = [
@@ -2116,19 +2116,19 @@ document.addEventListener('DOMContentLoaded', () => {
       { bottom: 0, left: '75%', scale: 1.1 },
       { bottom: 0, left: '85%', scale: 0.7 }
     ];
-
+    
     treePositions.forEach((pos, i) => {
       const tree = document.createElement('div');
       tree.className = 'forest-tree';
-
+      
       const color = treeColors[Math.floor(Math.random() * treeColors.length)];
       const positionStyle = Object.entries(pos)
         .filter(([key]) => key !== 'scale')
         .map(([key, value]) => `${key}: ${value};`)
         .join(' ');
-
+        
       const delay = i * 0.2;
-
+      
       tree.style.cssText = `
         position: absolute;
         ${positionStyle}
@@ -2139,7 +2139,7 @@ document.addEventListener('DOMContentLoaded', () => {
         opacity: 0;
         animation: fade-in 1s ease forwards ${delay}s;
       `;
-
+      
       // Create trunk
       const trunk = document.createElement('div');
       trunk.style.cssText = `
@@ -2151,7 +2151,7 @@ document.addEventListener('DOMContentLoaded', () => {
         background: #6b4f2d;
       `;
       tree.appendChild(trunk);
-
+      
       // Create tree parts (triangles)
       for (let j = 0; j < 3; j++) {
         const treePart = document.createElement('div');
@@ -2166,10 +2166,10 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
         tree.appendChild(treePart);
       }
-
+      
       forestContainer.appendChild(tree);
     });
-
+    
     // Create falling leaves
     const leaves = document.createElement('div');
     leaves.className = 'forest-leaves';
@@ -2180,17 +2180,17 @@ document.addEventListener('DOMContentLoaded', () => {
       width: 100%;
       height: 100%;
     `;
-
+    
     for (let i = 0; i < 20; i++) {
       const leaf = document.createElement('div');
       leaf.className = 'forest-leaf';
-
+      
       const size = Math.random() * 10 + 5;
       const color = treeColors[Math.floor(Math.random() * treeColors.length)];
       const delay = i * 0.3 + 1;
       const duration = Math.random() * 10 + 10;
       const left = Math.random() * 100;
-
+      
       leaf.style.cssText = `
         position: absolute;
         top: -${size}px;
@@ -2206,9 +2206,9 @@ document.addEventListener('DOMContentLoaded', () => {
       `;
       leaves.appendChild(leaf);
     }
-
+    
     forestContainer.appendChild(leaves);
-
+    
     // Create subtle mist
     const mist = document.createElement('div');
     mist.className = 'forest-mist';
@@ -2223,9 +2223,9 @@ document.addEventListener('DOMContentLoaded', () => {
       animation: fade-in 3s ease forwards 2s;
     `;
     forestContainer.appendChild(mist);
-
+    
     document.body.appendChild(forestContainer);
-
+    
     // Add the animation if it doesn't exist
     if (!document.getElementById('forest-animation')) {
       const style = document.createElement('style');
@@ -2250,18 +2250,18 @@ document.addEventListener('DOMContentLoaded', () => {
       `;
       document.head.appendChild(style);
     }
-
+    
     // Fade in
     setTimeout(() => {
       forestContainer.style.opacity = '1';
-
+      
       // Add subtle tree movement after fade in
       document.querySelectorAll('.forest-tree').forEach((tree) => {
         tree.style.animation += ', tree-sway 10s ease-in-out infinite';
       });
     }, 100);
   }
-
+  
   // Create midnight effects
   function createMidnightEffects() {
     const midnightContainer = document.createElement('div');
@@ -2277,7 +2277,7 @@ document.addEventListener('DOMContentLoaded', () => {
       opacity: 0;
       transition: opacity 1s ease;
     `;
-
+    
     // Create cityscape silhouette
     const cityscape = document.createElement('div');
     cityscape.className = 'midnight-cityscape';
@@ -2294,7 +2294,7 @@ document.addEventListener('DOMContentLoaded', () => {
       animation: fade-in 2s ease forwards 1s;
       `;
       midnightContainer.appendChild(cityscape);
-
+      
       // Create stars
       const stars = document.createElement('div');
       stars.className = 'midnight-stars';
@@ -2305,17 +2305,17 @@ document.addEventListener('DOMContentLoaded', () => {
         width: 100%;
         height: 100%;
       `;
-
+      
       for (let i = 0; i < 100; i++) {
         const star = document.createElement('div');
         star.className = 'midnight-star';
-
+        
         const size = Math.random() * 2 + 1;
         const left = Math.random() * 100;
         const top = Math.random() * 80;
         const delay = Math.random() * 3;
         const duration = Math.random() * 2 + 1;
-
+        
         star.style.cssText = `
           position: absolute;
           top: ${top}%;
@@ -2330,9 +2330,9 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
         stars.appendChild(star);
       }
-
+      
       midnightContainer.appendChild(stars);
-
+      
       // Create moon
       const moon = document.createElement('div');
       moon.className = 'midnight-moon';
@@ -2348,9 +2348,9 @@ document.addEventListener('DOMContentLoaded', () => {
         animation: fade-in 3s ease forwards 1.5s;
       `;
       midnightContainer.appendChild(moon);
-
+      
       document.body.appendChild(midnightContainer);
-
+      
       // Add the animation if it doesn't exist
       if (!document.getElementById('midnight-animation')) {
         const style = document.createElement('style');
@@ -2364,19 +2364,19 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
         document.head.appendChild(style);
       }
-
+      
       // Fade in
       setTimeout(() => {
         midnightContainer.style.opacity = '1';
       }, 100);
     }
-
+    
     // Load previously saved theme on page load
     window.addEventListener('DOMContentLoaded', () => {
       const savedTheme = localStorage.getItem('birthday-theme');
       if (savedTheme) {
         applyTheme(savedTheme);
-
+        
         // Set the custom theme values if applied
         if (savedTheme === 'custom') {
           const primaryColor = document.getElementById('primary-color');
@@ -2387,6 +2387,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
     });
-
+    
     console.log("Enhanced theme system initialized.");
   });
